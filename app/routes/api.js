@@ -18,9 +18,26 @@ module.exports = function(app, express, io, db){
 		}, 'Map', function(err, result){
 				if(err)
 					res.send(err.message);
-				else
+				else{
+
+					io.emit('new_map', result );
 					res.json(result);
+				}
 			});
+
+	});
+
+	//pegar todos os mapas
+	api.get('/getAllMaps', function(req, res){
+
+		db.cypherQuery("MATCH (map:Map) RETURN map", function(err, result){
+			if(err){
+				res.send(err.message);
+			}
+			else
+				res.json(result.data);
+		});
+
 
 	});
 

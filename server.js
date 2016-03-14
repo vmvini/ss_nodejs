@@ -54,8 +54,8 @@ app.use('/api', api);
 app.get('*', function(req, res){
 	//enviar arquivo index.html como resposta
 	//__dirname é var global com endereço diretorio da aplicaçao
-	//res.sendFile(__dirname + '/public/app/views/index.html');
-	res.send('Hello World');
+	res.sendFile(__dirname + '/public/app/views/index.html');
+	
 });
 
 

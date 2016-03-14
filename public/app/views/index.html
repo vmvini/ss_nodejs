@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+<head>
+	<base href="/" />
+	<title>Synthetic Study</title>
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular-route.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+
+	<!-- Services -->
+	<script type="text/javascript" src="app/services/mapService.js"></script>
+
+	<!-- Controllers -->
+	<script type="text/javascript" src="app/controllers/mapController.js"></script>
+
+	<!-- Directives -->
+	
+	
+	<script type="text/javascript" src="app/app.routes.js"></script>
+
+	<!-- para entender o caminho app/app.js veja: app.use(express.static(__dirname + '/public')); em server.js -->
+	<script type="text/javascript" src="app/app.js"></script>
+
+</head>
+
+<body>
+
+	<main class="container">
+		<div ng-view></div>
+	</main>
+
+</body>
+
+</html>

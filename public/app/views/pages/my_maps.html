@@ -1,0 +1,31 @@
+
+
+
+
+
+<div>
+	<h1>Crie um novo mapa</h1>
+	<form ng-submit="mapc.createMap()">
+		Nome: <input type="text" ng-model="mapc.mapData.name" ><br>
+		Criador: <input type="text" ng-model="mapc.mapData.creator"><br>
+		Descricao: <input type="text" ng-model="mapc.mapData.description"><br>
+
+		<input type="submit" value="enviar"/>
+	</form>
+</div>
+
+<br><br>
+<div ng-repeat="each in mapc.maps">
+	<hr>
+	<p>Nome: {{each.name}}</p>
+	<p>Criador: {{each.creator}}</p>
+	<p>Descricao: {{each.description}}</p>
+</div>
+
+
+
+
+
+
+
+
