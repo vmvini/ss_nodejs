@@ -1,0 +1,18 @@
+{
+  "name": "SyntheticStudy",
+  "version": "0.0.0",
+  "description": "Web app to build and share mind maps",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcus Vinicius",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "morgan": "~1.7.0",
+    "body-parser": "~1.15.0",
+    "express": "~4.13.4",
+    "node-neo4j": "~2.0.3",
+    "socket.io": "~1.4.5"
+  }
+}
