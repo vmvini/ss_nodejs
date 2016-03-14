@@ -15,8 +15,10 @@ var http = require('http').Server(app);
 
 var io = require('socket.io')(http);
 
+var db = '';
+
 try{
-var db = new neo4j(config.database);
+	db = new neo4j(config.database);
 }
 catch(e){
 	console.log(e);
@@ -40,6 +42,12 @@ app.use(express.static(__dirname + '/public'));
 	SETAR API DE ROTEAMENTO DE LINKS 
 
 */
+var api = require('./app/routes/api')(app, express, io, db);
+
+//registrando api para uso pelo app. 
+//todas as rotas dessa api deverão ser acessadas com /api antes.
+//por ex: localhost:3010/api/signup
+app.use('/api', api);
 
 
 //registrando funcao anonima ao evento de requisição get em qualquer endereço
