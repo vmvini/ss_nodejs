@@ -17,9 +17,11 @@
 <br><br>
 <div ng-repeat="each in mapc.maps">
 	<hr>
-	<p>Nome: {{each.name}}</p>
-	<p>Criador: {{each.creator}}</p>
-	<p>Descricao: {{each.description}}</p>
+	<a href="/map/{{each._id}}">
+		<p>Nome: {{each.name}}</p>
+		<p>Criador: {{each.creator}}</p>
+		<p>Descricao: {{each.description}}</p>
+	</a>
 </div>
 
 
