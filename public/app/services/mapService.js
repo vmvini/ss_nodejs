@@ -13,6 +13,10 @@ angular.module('mapService', [])
 		return $http.get('/api/getAllMaps');
 	};
 
+	mapFactory.AllFirstNodes = function(mapData){
+		return $http.post('/api/allFirstLevelNodes', mapData);
+	};
+
 	return mapFactory;
 
 

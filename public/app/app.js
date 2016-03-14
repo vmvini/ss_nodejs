@@ -1,1 +1,1 @@
-angular.module('MyApp', ['appRoutes','mapService', 'mapController']);
+angular.module('MyApp', ['appRoutes','mapService', 'mapController', 'freeArea']);

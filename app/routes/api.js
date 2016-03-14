@@ -70,9 +70,9 @@ module.exports = function(app, express, io, db){
 
 
 	//criar rota para recuperar todos os nós de nivel 0 do mapa
-	api.get('/allFirstLevelNodes', function(req, res){
+	api.post('/allFirstLevelNodes', function(req, res){
 
-		db.cypherQuery("MATCH (map:Map {_id:"+req.body.map+"})-[]->(textNode:TextNode) RETURN textNode", function(err, result){
+		db.cypherQuery("MATCH (map:Map)-[]->(textNode:TextNode) WHERE id(map)="+req.body.mapId+"  RETURN textNode", function(err, result){
 			if(err){
 				res.send(err.message);
 			}
@@ -85,7 +85,7 @@ module.exports = function(app, express, io, db){
 
 
 	//criar rota para recuperar todos os sub nós de um nó 
-	api.get('/allSubNodesOf', function(req, res){
+	/*api.post('/allSubNodesOf', function(req, res){
 
 		db.cypherQuery("MATCH (parentNode:TextNode{_id:"+req.body.parent+"})-[]->(textNode:TextNode) RETURN textNode", function(err, result){
 			if(err){
@@ -96,7 +96,7 @@ module.exports = function(app, express, io, db){
 		});
 
 	});
-
+*/
 
 
 

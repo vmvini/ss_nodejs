@@ -7,8 +7,12 @@ angular.module('appRoutes', ['ngRoute'])
 			templateUrl: 'app/views/pages/my_maps.html',
 			controller: 'MapController',
 			controllerAs:'mapc'
+		})
+		.when('/map/:mapId',{
+			templateUrl: 'app/views/pages/free_area.html',
+			controller: 'FreeAreaController',
+			controllerAs: 'fareac'
 		});
-		
 
 
 	$locationProvider.html5Mode(true);
