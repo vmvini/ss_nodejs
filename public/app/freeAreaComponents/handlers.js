@@ -114,9 +114,10 @@ function Div(){ //recebe um array de domObjects no construtor
 	this.show = function(domObject, stage){
 		var that = this;
 		return function(){
+			domObject.style.top = stage.mouseY + "px";
+			domObject.style.left = stage.mouseX + "px";
+
 			domObject.style.display = "inline-block";
-			domObject.style.top = stage.mouseY;
-			domObject.style.left = stage.mouseX;
 			that.lastDivX = stage.mouseX;
 			that.lastDivY = stage.mouseY;
 		};	
