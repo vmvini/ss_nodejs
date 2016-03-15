@@ -1,6 +1,6 @@
 angular.module('freeArea', [])
 
-.controller('FreeAreaController', function(MapService, socketio, $routeParams, StageService){
+.controller('FreeAreaController', function(MapService, socketio, $routeParams, StageManagerService, StageConfigurator){
 
 //	console.log($routeParams.mapId);
 
@@ -12,11 +12,10 @@ angular.module('freeArea', [])
 		.success(function(data){
 			vm.firstNodes = data;
 			console.log(vm.firstNodes);
-			vm.firstNodes.forEach(function(each){
-				console.log(each.text);
-				StageService.addText(each.text, 0, 0);
-			});
+			
 		});
+
+	StageConfigurator.config();
 
 	
 

@@ -1,1 +1,58 @@
-<canvas id="myCanvas">navegador nao suportado</canvas>
+<style>
+body,html,div
+{
+	margin:0px;
+	padding: 0px;
+	border:0 none;
+	overflow:hidden;
+}
+
+#textInput{
+	display:none;
+	width:300px;
+	height:100px;
+	background-color:yellow;
+	top:0px;
+	left:0px;
+	z-index:3;
+	position:absolute;
+}
+			
+#keyword{
+	display:none;
+	width:100px;
+	height:20px;
+	background-color:green;
+	top:0px;
+	left:0px;
+	z-index:3;
+	position:absolute;
+}
+</style>
+
+<canvas id="myCanvas" style="background-color:white;" >
+		No Canvas supported by your browser!
+	</canvas>
+
+	<div id="textInput" >
+		<div id="text" contenteditable="true">
+
+		</div>
+		<div id="enterButton">
+			Enter
+		</div>
+	</div>
+
+	<div id="textUpdate" >
+		<div id="editText" contenteditable="true">
+		</div>
+		<div id="chave">
+			marcar
+		</div>
+		<div id="editEnterButton">
+			Enter
+		</div>
+
+		<div id="erase">
+		</div>
+	</div>
