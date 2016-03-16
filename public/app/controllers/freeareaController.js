@@ -17,7 +17,7 @@ angular.module('freeArea', [])
 
 			vm.firstNodes.forEach(function(each){
 				var text = each.text || each.content;
-				StageManagerService.addText(text, each.posx, each.posy, true);
+				StageManagerService.addText(text, each.posx, each.posy, { id:each._id });
 			});
 			
 		});

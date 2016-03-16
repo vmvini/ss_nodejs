@@ -77,8 +77,12 @@ angular.module('easel', [])
 		if(notpersist == undefined){ //deve persistir
 			persistFirstLevelText(text, x, y, function(data){
 				label1.id = data._id;
-				console.log("id do texto inserido: " + data._id);
+				console.log("texto inserido id: " + label1.id);
+				console.log(label1);
 			});
+		}
+		else{
+			label1.id = notpersist.id;
 		}
 
 		stageFactory.currentFrame.addChildFrame(label1);
