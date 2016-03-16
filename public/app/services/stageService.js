@@ -39,21 +39,33 @@ angular.module('easel', [])
 
 	stageFactory.setMap = function(mapId){
 		mapkey = mapId;
+		stageFactory.originFrame.id = mapkey;
 	}
 
-
-	function persistFirstLevelText(text, x, y, callback){
+	//salva texto no banco de dados
+	function persistText(text, x, y, parent, callback){
 		var textNodeData = { 
 			content : text,
 			posx: x,
 			posy: y,
-			parent: mapkey
+			parent: parent
 		};
 
-		MapService.insertFirstLevelTextNode(textNodeData)
-			.success(function(data){
-				callback(data);
-			});
+		MapService.insertTextNode(textNodeData)
+		.success(function(data){
+			callback(data);
+		});
+	
+	}
+
+	//recupera textos do banco de dados
+	function fetchTextNodes(parentId, callback){
+		
+		MapService.allTextNodesOf( { parentId:parentId } )
+		.success(function(data){
+			callback(data);
+		});
+
 	}
 
 
@@ -61,7 +73,7 @@ angular.module('easel', [])
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");
 		label1.x = x;
 		label1.y = y;
-		console.log("posx: " + x + " posy: " + y);
+		
 		label1.alpha = 1;
 		label1.lineWidth = 1000;
 
@@ -75,13 +87,12 @@ angular.module('easel', [])
 		}
 		
 		if(notpersist == undefined){ //deve persistir
-			persistFirstLevelText(text, x, y, function(data){
+			persistText(text, x, y, stageFactory.currentFrame.id, function(data){
 				label1.id = data._id;
-				console.log("texto inserido id: " + label1.id);
-				console.log(label1);
+				
 			});
 		}
-		else{
+		else{ //nao deve persistir
 			label1.id = notpersist.id;
 		}
 
@@ -109,9 +120,24 @@ angular.module('easel', [])
 			stageFactory.currentFrame.saveFrameState();
 			stageFactory.setInitialScale();
 
-			//this.stage.setTransform(point.x, point.y);
-			
-			stageFactory.currentFrame.drawChilds();
+			console.log("tamanho do array frameObjects: " + stageFactory.currentFrame.frameObjects.length );
+			//ler os filhos de currentFrame no banco de dados... se nao tiver nenhum localmente
+			if(stageFactory.currentFrame.frameObjects.length == 0){
+
+				stageFactory.stage.removeAllChildren();
+				stageFactory.stage.update();
+
+				fetchTextNodes(stageFactory.currentFrame.id, function(data){
+					data.forEach(function(each){
+						console.log("tem filho");
+						stageFactory.addText(each.content, each.posx, each.posy, { id:each._id });
+					});
+				});
+				
+			}
+			else //se ja tiver textos carregados localmente. simplesmente desenha-los
+				stageFactory.currentFrame.drawChilds();
+
 
 			//retirar zoom
 			var event;

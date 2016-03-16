@@ -71,7 +71,7 @@ function ZoomBehavior(canvas, stageManager, listenerManager){
 			stage.scaleX=stage.scaleY*=zoom;
 			stage.update();
 			that.lastMouseOverFrame = stage.getObjectUnderPoint(local.x, local.y, 0); 
-			console.log(that.lastMouseOverFrame);
+			
 			that.stageManager.zoomLimitsBehavior(that.lastMouseOverFrame);
 			
 		}

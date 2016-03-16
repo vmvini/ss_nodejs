@@ -18,7 +18,7 @@ angular.module('mapService', [])
 	};
 
 
-	mapFactory.insertFirstLevelTextNode = function(textNodeData){
+	mapFactory.insertTextNode = function(textNodeData){
 		/*/insertTextNode
 			req.body.content
 			req.body.posx
@@ -27,6 +27,13 @@ angular.module('mapService', [])
 		*/
 		return $http.post('/api/insertTextNode', textNodeData);
 	};
+
+
+	mapFactory.allTextNodesOf = function(parentData){
+		//req.body.parentId
+		return $http.post('/api/allSubTextNodesOf', parentData);
+	};
+
 
 
 	return mapFactory;

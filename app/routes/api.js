@@ -85,9 +85,9 @@ module.exports = function(app, express, io, db){
 
 
 	//criar rota para recuperar todos os sub nós de um nó 
-	/*api.post('/allSubNodesOf', function(req, res){
+	api.post('/allSubTextNodesOf', function(req, res){
 
-		db.cypherQuery("MATCH (parentNode:TextNode{_id:"+req.body.parent+"})-[]->(textNode:TextNode) RETURN textNode", function(err, result){
+		db.cypherQuery("MATCH (p:TextNode)-[]->(t:TextNode) WHERE id(p)="+req.body.parentId+" RETURN t", function(err, result){
 			if(err){
 				res.send(err.message);
 			}
@@ -96,7 +96,7 @@ module.exports = function(app, express, io, db){
 		});
 
 	});
-*/
+
 
 
 
