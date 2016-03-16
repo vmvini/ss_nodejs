@@ -70,7 +70,7 @@ angular.module('easel', [])
 
 
 	stageFactory.addText = function(text, x, y, notpersist){
-		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");
+		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
 		label1.x = x;
 		label1.y = y;
 		
@@ -120,7 +120,7 @@ angular.module('easel', [])
 			stageFactory.currentFrame.saveFrameState();
 			stageFactory.setInitialScale();
 
-			console.log("tamanho do array frameObjects: " + stageFactory.currentFrame.frameObjects.length );
+		
 			//ler os filhos de currentFrame no banco de dados... se nao tiver nenhum localmente
 			if(stageFactory.currentFrame.frameObjects.length == 0){
 
@@ -150,8 +150,7 @@ angular.module('easel', [])
 		else if(stageFactory.stage.scaleX <= CanvasProps.min_zoom){
 			if(!stageFactory.currentFrame.parentFrame){
 				//se o pai do current frame for null, significa que esta no quadro inicial
-				stageFactory.setInitialScale();
-				stageFactory.stage.setTransform(0,0);
+				stageFactory.isRootFrameAndMinZoom = true;
 			}
 			else{
 				
@@ -161,6 +160,9 @@ angular.module('easel', [])
 				
 			}
 		}
+
+		else //se nao esta nos limites de zoom, entao permitir zoom livremente.
+			stageFactory.isRootFrameAndMinZoom = false;
 	};
 
 

@@ -54,25 +54,38 @@ function ZoomBehavior(canvas, stageManager, listenerManager){
 	this.makeZoomHandler = function(){
 		var stage = this.stageManager.stage;
 		var that = this;
+		var increasezoom;
 		return function(e){
 			if(Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)))>0){
+				//aumentando zoom
 				zoom=1.1;
+				increasezoom = true;
 
 			}
 			else{
-				zoom=1/1.1;
+				increasezoom = false;
+				if(!that.stageManager.isRootFrameAndMinZoom)
+					zoom=1/1.1;
+
+				//diminuindo zoom
 
 			}
-			var local = stage.globalToLocal(stage.mouseX, stage.mouseY);
-			stage.regX=local.x;
-			stage.regY=local.y;
-			stage.x=stage.mouseX;
-			stage.y=stage.mouseY;	
-			stage.scaleX=stage.scaleY*=zoom;
-			stage.update();
-			that.lastMouseOverFrame = stage.getObjectUnderPoint(local.x, local.y, 0); 
+			if(!that.stageManager.isRootFrameAndMinZoom || increasezoom === true ){
+				var local = stage.globalToLocal(stage.mouseX, stage.mouseY);
+				stage.regX=local.x;
+				stage.regY=local.y;
+				stage.x=stage.mouseX;
+				stage.y=stage.mouseY;	
+				stage.scaleX=stage.scaleY*=zoom;
+				stage.update();
+				
+				var tmpMouseOverFrame = stage.getObjectUnderPoint(local.x, local.y, 0);
+				if(tmpMouseOverFrame)
+					that.lastMouseOverFrame = tmpMouseOverFrame;  
+				
+				that.stageManager.zoomLimitsBehavior(that.lastMouseOverFrame);
+			}
 			
-			that.stageManager.zoomLimitsBehavior(that.lastMouseOverFrame);
 			
 		}
 	}
