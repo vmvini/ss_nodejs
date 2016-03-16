@@ -17,6 +17,18 @@ angular.module('mapService', [])
 		return $http.post('/api/allFirstLevelNodes', mapData);
 	};
 
+
+	mapFactory.insertFirstLevelTextNode = function(textNodeData){
+		/*/insertTextNode
+			req.body.content
+			req.body.posx
+			req.body.posy
+			req.body.parent
+		*/
+		return $http.post('/api/insertTextNode', textNodeData);
+	};
+
+
 	return mapFactory;
 
 

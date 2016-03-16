@@ -19,7 +19,7 @@ angular.module('easel', [])
 })
 
 
-.factory('StageManagerService', function(CanvasProps){
+.factory('StageManagerService', function(CanvasProps, MapService){
 
 	var stageFactory = {};
 
@@ -35,13 +35,33 @@ angular.module('easel', [])
 
 	stageFactory.originFrame = stageFactory.currentFrame;
 	
+	var mapkey = '';
+
+	stageFactory.setMap = function(mapId){
+		mapkey = mapId;
+	}
 
 
+	function persistFirstLevelText(text, x, y, callback){
+		var textNodeData = { 
+			content : text,
+			posx: x,
+			posy: y,
+			parent: mapkey
+		};
 
-	stageFactory.addText = function(text, x, y){
+		MapService.insertFirstLevelTextNode(textNodeData)
+			.success(function(data){
+				callback(data);
+			});
+	}
+
+
+	stageFactory.addText = function(text, x, y, notpersist){
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");
 		label1.x = x;
 		label1.y = y;
+		console.log("posx: " + x + " posy: " + y);
 		label1.alpha = 1;
 		label1.lineWidth = 1000;
 
@@ -50,12 +70,20 @@ angular.module('easel', [])
 		hit.graphics.beginFill("#000").drawRect(0, 0, label1.getBounds().width + 10, label1.getMeasuredHeight() + 10);
 		label1.hitArea = hit;
 
-		for(var x = 0; x < stageFactory.behaviors.length; x++){
-			stageFactory.behaviors[x].applyTo(label1);
+		for(var i = 0; i < stageFactory.behaviors.length; i++){
+			stageFactory.behaviors[i].applyTo(label1);
 		}
 		
+		if(notpersist == undefined){ //deve persistir
+			persistFirstLevelText(text, x, y, function(data){
+				label1.id = data._id;
+				console.log("id do texto inserido: " + data._id);
+			});
+		}
+
 		stageFactory.currentFrame.addChildFrame(label1);
-		stageFactory.currentFrame.drawLastInserted(); //é melhor mudar para drawLastInserted
+		stageFactory.currentFrame.drawLastInserted();
+		
 
 	};
 
@@ -139,7 +167,9 @@ angular.module('easel', [])
 
 	
 
-	configurator.config = function(){
+	configurator.config = function(mapId){
+
+		StageManagerService.setMap(mapId);	
 		
 		StageManagerService.stage.enableMouseOver();
 		StageManagerService.enableDragCanvas();

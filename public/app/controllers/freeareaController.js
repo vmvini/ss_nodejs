@@ -8,15 +8,21 @@ angular.module('freeArea', [])
 
 	vm.mapData = { mapId: $routeParams.mapId };
 	
+	StageConfigurator.config(vm.mapData.mapId);
+
+
 	MapService.AllFirstNodes(vm.mapData)
 		.success(function(data){
 			vm.firstNodes = data;
-			console.log(vm.firstNodes);
+
+			vm.firstNodes.forEach(function(each){
+				var text = each.text || each.content;
+				StageManagerService.addText(text, each.posx, each.posy, true);
+			});
 			
 		});
 
-	StageConfigurator.config();
-
+	
 	
 
 
