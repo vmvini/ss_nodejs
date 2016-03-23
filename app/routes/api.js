@@ -49,7 +49,8 @@ module.exports = function(app, express, io, db){
 
 			content: req.body.content,
 			posx: req.body.posx,
-			posy: req.body.posy
+			posy: req.body.posy,
+			html: req.body.html
 
 		}, 'TextNode', function(err, result){
 			if(err)

@@ -43,12 +43,13 @@ angular.module('easel', [])
 	}
 
 	//salva texto no banco de dados
-	function persistText(text, x, y, parent, callback){
+	function persistText(text, x, y, parent, html, callback){
 		var textNodeData = { 
 			content : text,
 			posx: x,
 			posy: y,
-			parent: parent
+			parent: parent,
+			html:html
 		};
 
 		MapService.insertTextNode(textNodeData)
@@ -73,17 +74,18 @@ angular.module('easel', [])
 		return word.getBounds().width;
 	};
 
-	
+	/*
 	stageFactory.generateHtmlText = function(textElement, mark){
 		textElement.htmltext = addSubstringAtPosition(mark.onlySpanTag, textElement.htmltext, mark.startIndex + textElement.updateLength );
 		textElement.updateLength += mark.onlySpanTag.length;
 		textElement.htmltext = addSubstringAtPosition("</span>", textElement.htmltext,  mark.endIndex + textElement.updateLength);
 		textElement.updateLength += "</span>".length;
-	};
 
+	};
+	*/
 	stageFactory.getMarkRectangule = function(textElement, MarkStartIndexPosition, mark){
 
-		stageFactory.generateHtmlText(textElement, mark );
+		
 
 		var i = mark.startIndex;
 
@@ -245,7 +247,7 @@ angular.module('easel', [])
 
 
 
-	stageFactory.addText = function(text, x, y, marks, notpersist){
+	stageFactory.addText = function(text, x, y, marks, html, notpersist){
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
 		label1.x = x;
 		label1.y = y;
@@ -262,11 +264,10 @@ angular.module('easel', [])
 			stageFactory.behaviors[i].applyTo(label1);
 		}
 
-		label1.htmltext = label1.text;
-		label1.updateLength = 0;
+		label1.htmltext = html;
 
 		if(notpersist == undefined){ //deve persistir
-			persistText(text, x, y, stageFactory.currentFrame.id, function(data){
+			persistText(text, x, y, stageFactory.currentFrame.id, html, function(data){
 				label1.id = data._id;
 				linkTextMark();
 
@@ -281,7 +282,6 @@ angular.module('easel', [])
 		
 
 		function linkTextMark(){
-		
 			if(marks){
 				marks.forEach(function(mark){
 

@@ -21,7 +21,7 @@ angular.module('freeArea', [])
 
 				TextMarksService.allTextMarks({ textId: each._id } )
 					.success(function(marks){
-						StageManagerService.addText(text, each.posx, each.posy, marks, { id:each._id });
+						StageManagerService.addText(text, each.posx, each.posy, marks, each.html, { id:each._id });
 					});
 				
 			});

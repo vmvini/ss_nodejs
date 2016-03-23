@@ -111,7 +111,7 @@
 
            var text = normalizeString( removeAllHtml( html ) );
 
-           var textWithSpans = normalizeString( removeHtmlExceptSpan(html) );
+          var textWithSpans = normalizeString( removeHtmlExceptSpan(html) );
            
            var marked = [];
            for(var i = 0; i < spans.length; i++){
@@ -145,7 +145,7 @@
                textToUpdate = null;
             }
             else
-              that.stageManager.addText(text, that.lastInsertTextPos.x, that.lastInsertTextPos.y, spanObjects );
+              that.stageManager.addText(text, that.lastInsertTextPos.x, that.lastInsertTextPos.y, spanObjects, html );
             
 
             $('#froala-editor').css('display', 'none');
