@@ -193,7 +193,7 @@ angular.module('easel', [])
 
 })
 
-.factory('StageConfigurator', function(StageManagerService){
+.factory('StageConfigurator', function(StageManagerService, CanvasProps){
 
 	var configurator = {};
 
@@ -206,16 +206,24 @@ angular.module('easel', [])
 		StageManagerService.stage.enableMouseOver();
 		StageManagerService.enableDragCanvas();
 
-		var insertTextDiv = new InsertTextDiv("textInput","text", "enterButton", StageManagerService, StageManagerService.listenerManager);
-		var dblClickHandler = insertTextDiv.createDblClickCanvasHandler();
-		dblClickHandler();
-		insertTextDiv.createEnterTextHandler();
+		//var insertTextDiv = new InsertTextDiv("textInput","text", "enterButton", StageManagerService, StageManagerService.listenerManager);
+		//var dblClickHandler = insertTextDiv.createDblClickCanvasHandler();
+		//dblClickHandler();
+		//insertTextDiv.createEnterTextHandler();
 
 		//criando behaviors a serem usados pelo stageManager
-		var insertTextBehavior = new InsertTextBehavior(insertTextDiv, StageManagerService.listenerManager);
+		//var insertTextBehavior = new InsertTextBehavior(insertTextDiv, StageManagerService.listenerManager);
 		var zoomBehavior = new ZoomBehavior(StageManagerService.canvasProps.canvas, StageManagerService, StageManagerService.listenerManager);
-		StageManagerService.behaviors.push(insertTextBehavior);
+		//StageManagerService.behaviors.push(insertTextBehavior);
 		StageManagerService.behaviors.push(zoomBehavior);
+
+		var myEditor = new MyEditor(StageManagerService, CanvasProps.canvas, StageManagerService.listenerManager  );
+		myEditor.initialize();
+
+		var editorTextBehavior = new MyEditorTextBehavior(myEditor, StageManagerService.listenerManager);
+
+		StageManagerService.behaviors.push(editorTextBehavior);
+
 
 	};
 

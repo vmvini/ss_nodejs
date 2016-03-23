@@ -7,6 +7,16 @@ body,html,div
 	overflow:hidden;
 }
 
+#froala-editor{
+	display:none;
+	width:400px;
+	top:0px;
+	left:0px;
+	z-index:3;
+	position:absolute;
+}
+
+
 #textInput{
 	display:none;
 	width:300px;
@@ -34,25 +44,6 @@ body,html,div
 		No Canvas supported by your browser!
 	</canvas>
 
-	<div id="textInput" >
-		<div id="text" contenteditable="true">
-
-		</div>
-		<div id="enterButton">
-			Enter
-		</div>
-	</div>
-
-	<div id="textUpdate" >
-		<div id="editText" contenteditable="true">
-		</div>
-		<div id="chave">
-			marcar
-		</div>
-		<div id="editEnterButton">
-			Enter
-		</div>
-
-		<div id="erase">
-		</div>
+	<div id="froala-editor">
+	  	<p>Digite seu texto aqui</p>
 	</div>
