@@ -1,5 +1,22 @@
 angular.module('mapService', [])
 
+.factory('TextMarksService', function($http){
+
+	var textMarkService = {};
+
+	textMarkService.persist = function(textMarkData){
+		return $http.post('/api/persistTextMark', textMarkData);
+	};
+
+	textMarkService.allTextMarks = function(textData){
+		return $http.post('/api/allTextMarks', textData);
+	};
+
+	return textMarkService;
+
+})
+
+
 .factory('MapService', function($http){
 
 	var mapFactory = {};

@@ -127,7 +127,6 @@
                  content:marked[i],
                  startIndex:startIndex,
                  endIndex:endIndex,
-                 length:marked[i].length, 
                  key:i,
                  onlySpanTag: onlySpanTag
                };
@@ -141,11 +140,13 @@
             }*/
 
             if(textToUpdate){
-               that.stageManager.updateText(textToUpdate, text, spanObjects);
+               //that.stageManager.updateText(textToUpdate, text, spanObjects);
+
                textToUpdate = null;
             }
             else
               that.stageManager.addText(text, that.lastInsertTextPos.x, that.lastInsertTextPos.y, spanObjects );
+            
 
             $('#froala-editor').css('display', 'none');
        

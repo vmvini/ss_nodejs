@@ -19,7 +19,7 @@ angular.module('easel', [])
 })
 
 
-.factory('StageManagerService', function(CanvasProps, MapService){
+.factory('StageManagerService', function(CanvasProps, MapService, TextMarksService){
 
 	var stageFactory = {};
 
@@ -68,8 +68,182 @@ angular.module('easel', [])
 
 	}
 
+	stageFactory.getCharWidth = function(string){
+		var word = new StageFrame(null, null, string, "48px Arial", "#000");
+		return word.getBounds().width;
+	};
 
-	stageFactory.addText = function(text, x, y, notpersist){
+	
+	stageFactory.generateHtmlText = function(textElement, mark){
+		textElement.htmltext = addSubstringAtPosition(mark.onlySpanTag, textElement.htmltext, mark.startIndex + textElement.updateLength );
+		textElement.updateLength += mark.onlySpanTag.length;
+		textElement.htmltext = addSubstringAtPosition("</span>", textElement.htmltext,  mark.endIndex + textElement.updateLength);
+		textElement.updateLength += "</span>".length;
+	};
+
+	stageFactory.getMarkRectangule = function(textElement, MarkStartIndexPosition, mark){
+
+		stageFactory.generateHtmlText(textElement, mark );
+
+		var i = mark.startIndex;
+
+		var lines = MarkStartIndexPosition.lines;
+		var qtdLines = lines.length;
+		var currentLine = MarkStartIndexPosition.line;
+		var currentCharAtLine = MarkStartIndexPosition.charIndex;
+
+		var lineHeight = MarkStartIndexPosition.lineHeight;
+
+		var posx = MarkStartIndexPosition.posX;
+		var posy = MarkStartIndexPosition.posY;
+
+		var width = 0;
+
+		var rects = [];
+
+		var currentChar = '';
+
+		while( ( i < mark.endIndex )  && ( currentLine < qtdLines )  ){
+
+			currentChar = charAt( lines[currentLine], currentCharAtLine++ );
+			width += stageFactory.getCharWidth( currentChar );
+			i++;
+
+			if ( currentCharAtLine == lines[currentLine].length ){
+
+				rects.push({
+					x:posx,
+					y:posy,
+					width:width
+				});
+
+
+				if( ++currentLine < qtdLines )
+					posy += lineHeight;
+
+
+				currentCharAtLine = 0;
+				posx = textElement.x;
+				width = 0;
+
+
+
+			}
+
+		}
+		rects.push({
+			x:posx, 
+			y:posy,
+			width:width
+		});
+
+		return rects;
+
+
+	};
+
+	stageFactory.getMarkStartIndexPosition = function(textElement, startIndex){
+		var metrics = textElement.getMetrics();
+		var lines = metrics.lines;
+		insertSpaceEveryLine(lines);
+
+		var qtdLines = lines.length;
+		var currentLine = 0;
+		var currentCharAtLine = 0;
+
+		var traversedX = textElement.x;
+		var traversedY = textElement.y;
+
+		var i = 0;
+		while( ( i < startIndex )  && ( currentLine < qtdLines )  ){
+
+
+			currentChar = charAt( lines[currentLine], currentCharAtLine++ );
+			traversedX += stageFactory.getCharWidth( currentChar );
+			i++;
+
+			if ( currentCharAtLine == lines[currentLine].length ){
+
+				if( ++currentLine < qtdLines )
+					traversedY += metrics.lineHeight;
+
+				currentCharAtLine = 0;
+				traversedX = textElement.x;
+
+			}
+
+
+		}
+
+		return {
+			posX : traversedX,
+			posY : traversedY,
+			line: currentLine,
+			lines:lines,
+			charIndex: currentCharAtLine,
+			lineHeight:metrics.lineHeight
+		};
+	};
+
+
+
+
+	stageFactory.drawRectangule = function(x, y, width, lineHeight){
+		var rect = new createjs.Shape();
+		rect.graphics.beginFill("#FFFF00").drawRect(x, y, width, lineHeight);
+		rect.alpha = 0.5;
+		stageFactory.stage.addChild(rect);
+		stageFactory.stage.update();
+
+		return rect;
+	};
+
+	stageFactory.drawMark = function(textElement, mark){
+		var drawnRect;
+		if(!textElement.textmarks)
+			textElement.textmarks = [];
+
+		var coordinates = stageFactory.getMarkStartIndexPosition(textElement, mark.startIndex);
+
+			var rects = stageFactory.getMarkRectangule(textElement, coordinates, mark);
+
+			for(var r = 0; r < rects.length; r++){
+				drawnRect = stageFactory.drawRectangule(rects[r].x, rects[r].y, rects[r].width, coordinates.lineHeight );
+				drawnRect.markId = mark.dbId;
+				textElement.textmarks.push(drawnRect);
+			}
+
+	};
+
+	stageFactory.drawMarks = function(textElement, marks){
+		var drawnRect;
+		if(!textElement.textmarks)
+			textElement.textmarks = [];
+
+		for(var m = 0; m < marks.length; m++ ){
+			var coordinates = stageFactory.getMarkStartIndexPosition(textElement, marks[m].startIndex);
+
+			var rects = stageFactory.getMarkRectangule(textElement, coordinates, marks[m]);
+
+			for(var r = 0; r < rects.length; r++){
+				drawnRect = stageFactory.drawRectangule(rects[r].x, rects[r].y, rects[r].width, coordinates.lineHeight );
+				
+				textElement.textmarks.push(drawnRect);
+			}
+			
+		}
+	};
+
+	function persistMark(mark, textId, callback){
+
+		TextMarksService.persist( { mark:mark, textId:textId } )
+				.success(function(data){
+					callback(data);
+				});		
+	}
+
+
+	stageFactory.addText = function(text, x, y, marks, notpersist){
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
 		label1.x = x;
 		label1.y = y;
@@ -85,16 +259,50 @@ angular.module('easel', [])
 		for(var i = 0; i < stageFactory.behaviors.length; i++){
 			stageFactory.behaviors[i].applyTo(label1);
 		}
-		
+		var hasLinkedTextMark = false;
+
 		if(notpersist == undefined){ //deve persistir
 			persistText(text, x, y, stageFactory.currentFrame.id, function(data){
 				label1.id = data._id;
+				linkTextMark();
+
 				
 			});
 		}
 		else{ //nao deve persistir
 			label1.id = notpersist.id;
 		}
+
+		label1.htmltext = label1.text;
+		label1.updateLength = 0;
+
+		if(!hasLinkedTextMark)
+			linkTextMark();
+
+		function linkTextMark(){
+			if(marks){
+				marks.forEach(function(mark){
+
+					if(!mark.dbId){
+					//essa mark nao foi salva no banco ainda
+					persistMark(mark, label1.id, function(data){
+
+						mark.dbId = data.dbId;
+						stageFactory.drawMark(label1, mark);
+					} );
+				}
+				else{
+					//essa mark veio do banco de dados
+					stageFactory.drawMark(label1, mark);
+				}
+
+			});
+
+			}
+			hasLinkedTextMark = true;
+		}
+
+		
 
 		stageFactory.currentFrame.addChildFrame(label1);
 		stageFactory.currentFrame.drawLastInserted();
@@ -206,15 +414,7 @@ angular.module('easel', [])
 		StageManagerService.stage.enableMouseOver();
 		StageManagerService.enableDragCanvas();
 
-		//var insertTextDiv = new InsertTextDiv("textInput","text", "enterButton", StageManagerService, StageManagerService.listenerManager);
-		//var dblClickHandler = insertTextDiv.createDblClickCanvasHandler();
-		//dblClickHandler();
-		//insertTextDiv.createEnterTextHandler();
-
-		//criando behaviors a serem usados pelo stageManager
-		//var insertTextBehavior = new InsertTextBehavior(insertTextDiv, StageManagerService.listenerManager);
 		var zoomBehavior = new ZoomBehavior(StageManagerService.canvasProps.canvas, StageManagerService, StageManagerService.listenerManager);
-		//StageManagerService.behaviors.push(insertTextBehavior);
 		StageManagerService.behaviors.push(zoomBehavior);
 
 		var myEditor = new MyEditor(StageManagerService, CanvasProps.canvas, StageManagerService.listenerManager  );

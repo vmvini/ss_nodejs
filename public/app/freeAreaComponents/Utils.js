@@ -35,3 +35,26 @@ function removeAllHtml(string){
 	var newstring = string.replace(/(&nbsp;|<([^>]+)>)/ig, "");
 	return newstring;
 }
+
+
+function decode_utf8(s) {
+			
+  return decodeURIComponent(escape(s));
+	
+}
+
+function encode_utf8(s) {
+  return escape(encodeURIComponent(s));
+}
+
+function charAt(string, index){
+
+	return string.charAt(index);
+
+}
+
+function insertSpaceEveryLine(arrayString){
+	for(var a = 0; a < arrayString.length; a++){
+		arrayString[a] += " ";
+	}
+}

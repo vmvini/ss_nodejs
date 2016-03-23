@@ -1,6 +1,6 @@
 angular.module('freeArea', [])
 
-.controller('FreeAreaController', function(MapService, socketio, $routeParams, StageManagerService, StageConfigurator){
+.controller('FreeAreaController', function(MapService, TextMarksService,  socketio, $routeParams, StageManagerService, StageConfigurator){
 
 //	console.log($routeParams.mapId);
 
@@ -17,7 +17,13 @@ angular.module('freeArea', [])
 
 			vm.firstNodes.forEach(function(each){
 				var text = each.text || each.content;
-				StageManagerService.addText(text, each.posx, each.posy, { id:each._id });
+				var marks;
+
+				TextMarksService.allTextMarks({ textId: each._id } )
+					.success(function(marks){
+						StageManagerService.addText(text, each.posx, each.posy, marks, { id:each._id });
+					});
+				
 			});
 			
 		});

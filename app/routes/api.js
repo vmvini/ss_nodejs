@@ -98,6 +98,73 @@ module.exports = function(app, express, io, db){
 	});
 
 
+	//recuperar todas as texts marks de um texto
+	api.post('/allTextMarks', function(req, res){
+
+		db.cypherQuery("MATCH (t:TextNode)-[]->(m:TextMark) WHERE id(t)=" + req.body.textId + " RETURN m", 
+			function(err, result){
+				if(err)
+					res.send(err.message);
+				else
+					res.json(result.data);
+			});
+
+	});
+
+	//persistir uma text mark de um texto
+	api.post('/persistTextMark', function(req, res){
+
+		db.insertNode(
+			{
+				content:req.body.mark.content,
+				startIndex: req.body.mark.startIndex,
+				endIndex: req.body.mark.endIndex,
+				key: req.body.mark.key,
+				onlySpanTag: req.body.mark.onlySpanTag
+			},
+			
+			'TextMark',
+
+			function(err, result){
+				if(err)
+					res.send(err.message);
+				else{
+					
+					db.updateNode(result._id,  //retorna true ou false operação update
+						{
+							dbId: result._id,
+							content:result.content,
+							startIndex: result.startIndex,
+							endIndex: result.endIndex,
+							key: result.key,
+							onlySpanTag: result.onlySpanTag
+
+					 	}, function(uerr, node){
+						if(uerr){
+							console.log("ERRO AO ADICIONAR PROPERTY dbId ao textMark");
+							res.send(uerr.message);
+						}
+						else{
+							db.insertRelationship( req.body.textId, result._id, 'MARK', {}, function(Rerr, Rresult){
+								if(Rerr)
+									res.send(Rerr.message);
+								else{
+									result.dbId = result._id;
+									
+									res.json(result);
+								}
+							} );
+						}
+
+					});
+
+				}
+			}
+
+		);
+	});
+
+
 
 
 	return api;
