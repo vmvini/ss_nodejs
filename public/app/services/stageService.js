@@ -40,6 +40,7 @@ angular.module('easel', [])
 	stageFactory.setMap = function(mapId){
 		mapkey = mapId;
 		stageFactory.originFrame.id = mapkey;
+		stageFactory.originFrame.markId = mapkey;
 	}
 
 	//salva texto no banco de dados
@@ -65,6 +66,7 @@ angular.module('easel', [])
 		MapService.allTextNodesOf( { parentId:parentId } )
 		.success(function(data){
 			callback(data);
+
 		});
 
 	}
@@ -191,11 +193,12 @@ angular.module('easel', [])
 
 
 	stageFactory.drawRectangule = function(x, y, width, lineHeight){
-		var rect = new createjs.Shape();
+		var rect = new StageFrameMark( stageFactory.stage, stageFactory.currentFrame );
 		rect.graphics.beginFill("#FFFF00").drawRect(x, y, width, lineHeight);
 		rect.alpha = 0.5;
-		stageFactory.stage.addChild(rect);
-		stageFactory.stage.update();
+
+		stageFactory.currentFrame.addChildFrame(rect);
+		stageFactory.currentFrame.drawLastInserted();
 
 		return rect;
 	};
@@ -213,6 +216,11 @@ angular.module('easel', [])
 			for(var r = 0; r < rects.length; r++){
 				drawnRect = stageFactory.drawRectangule(rects[r].x, rects[r].y, rects[r].width, coordinates.lineHeight );
 				drawnRect.markId = mark.dbId;
+
+				for(var i = 0; i < stageFactory.behaviors.length; i++){
+					stageFactory.behaviors[i].applyTo(drawnRect);
+				}
+
 				textElement.textmarks.push(drawnRect);
 			}
 
@@ -266,9 +274,15 @@ angular.module('easel', [])
 
 		label1.htmltext = html;
 
+		stageFactory.currentFrame.addChildFrame(label1);
+		stageFactory.currentFrame.drawLastInserted();
+				
+
 		if(notpersist == undefined){ //deve persistir
-			persistText(text, x, y, stageFactory.currentFrame.id, html, function(data){
+			
+			persistText(text, x, y, stageFactory.currentFrame.markId, html, function(data){
 				label1.id = data._id;
+				
 				linkTextMark();
 
 				
@@ -306,8 +320,7 @@ angular.module('easel', [])
 
 		
 
-		stageFactory.currentFrame.addChildFrame(label1);
-		stageFactory.currentFrame.drawLastInserted();
+		
 		
 
 	};
@@ -326,35 +339,43 @@ angular.module('easel', [])
 		
 		if(stageFactory.stage.scaleX >= CanvasProps.max_zoom){
 			
-			stageFactory.currentFrame = lastMouseOverFrame;
-			stageFactory.currentFrame.saveFrameState();
-			stageFactory.setInitialScale();
+			if( lastMouseOverFrame instanceof StageFrameMark ){
 
-		
-			//ler os filhos de currentFrame no banco de dados... se nao tiver nenhum localmente
-			if(stageFactory.currentFrame.frameObjects.length == 0){
+				stageFactory.currentFrame = lastMouseOverFrame;
+				stageFactory.currentFrame.saveFrameState();
+				stageFactory.setInitialScale();
+				//ler os filhos de currentFrame no banco de dados... se nao tiver nenhum localmente
+				if(stageFactory.currentFrame.frameObjects.length == 0){
 
-				stageFactory.stage.removeAllChildren();
-				stageFactory.stage.update();
+					stageFactory.stage.removeAllChildren();
+					stageFactory.stage.update();
 
-				fetchTextNodes(stageFactory.currentFrame.id, function(data){
-					data.forEach(function(each){
-						console.log("tem filho");
-						stageFactory.addText(each.content, each.posx, each.posy, { id:each._id });
+					fetchTextNodes(stageFactory.currentFrame.markId, function(data){
+						data.forEach(function(each){
+							
+							TextMarksService.allTextMarks( { textId: each._id } )
+							.success(function(marks){
+								stageFactory.addText(each.content, each.posx, each.posy, marks, each.html, { id:each._id });
+							});
+							
+						});
 					});
-				});
-				
+					
+				}
+				else //se ja tiver textos carregados localmente. simplesmente desenha-los
+					stageFactory.currentFrame.drawChilds();
+
+				//retirar zoom
+				var event;
+				event = document.createEvent("HTMLEvents");
+	    		event.initEvent("mouseout", true, true);
+	   			event.eventName = "mouseout";
+	   			stageFactory.currentFrame.dispatchEvent(event);
+
 			}
-			else //se ja tiver textos carregados localmente. simplesmente desenha-los
-				stageFactory.currentFrame.drawChilds();
 
 
-			//retirar zoom
-			var event;
-			event = document.createEvent("HTMLEvents");
-    		event.initEvent("mouseout", true, true);
-   			event.eventName = "mouseout";
-   			stageFactory.currentFrame.dispatchEvent(event);
+			
 		
 		}
 		else if(stageFactory.stage.scaleX <= CanvasProps.min_zoom){

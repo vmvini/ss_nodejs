@@ -88,7 +88,7 @@ module.exports = function(app, express, io, db){
 	//criar rota para recuperar todos os sub nós de um nó 
 	api.post('/allSubTextNodesOf', function(req, res){
 
-		db.cypherQuery("MATCH (p:TextNode)-[]->(t:TextNode) WHERE id(p)="+req.body.parentId+" RETURN t", function(err, result){
+		db.cypherQuery("MATCH (p:TextMark)-[]->(t:TextNode) WHERE id(p)="+req.body.parentId+" RETURN t", function(err, result){
 			if(err){
 				res.send(err.message);
 			}

@@ -80,6 +80,7 @@ function ZoomBehavior(canvas, stageManager, listenerManager){
 				stage.update();
 				
 				var tmpMouseOverFrame = stage.getObjectUnderPoint(local.x, local.y, 0);
+				
 				if(tmpMouseOverFrame)
 					that.lastMouseOverFrame = tmpMouseOverFrame;  
 				

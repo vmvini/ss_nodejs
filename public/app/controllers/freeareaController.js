@@ -17,8 +17,7 @@ angular.module('freeArea', [])
 
 			vm.firstNodes.forEach(function(each){
 				var text = each.text || each.content;
-				var marks;
-
+				
 				TextMarksService.allTextMarks({ textId: each._id } )
 					.success(function(marks){
 						StageManagerService.addText(text, each.posx, each.posy, marks, each.html, { id:each._id });
