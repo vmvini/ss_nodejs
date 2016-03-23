@@ -199,6 +199,7 @@ angular.module('easel', [])
 	};
 
 	stageFactory.drawMark = function(textElement, mark){
+		console.log("desenhando marcacao");
 		var drawnRect;
 		if(!textElement.textmarks)
 			textElement.textmarks = [];
@@ -243,6 +244,7 @@ angular.module('easel', [])
 	}
 
 
+
 	stageFactory.addText = function(text, x, y, marks, notpersist){
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
 		label1.x = x;
@@ -259,7 +261,9 @@ angular.module('easel', [])
 		for(var i = 0; i < stageFactory.behaviors.length; i++){
 			stageFactory.behaviors[i].applyTo(label1);
 		}
-		var hasLinkedTextMark = false;
+
+		label1.htmltext = label1.text;
+		label1.updateLength = 0;
 
 		if(notpersist == undefined){ //deve persistir
 			persistText(text, x, y, stageFactory.currentFrame.id, function(data){
@@ -271,15 +275,13 @@ angular.module('easel', [])
 		}
 		else{ //nao deve persistir
 			label1.id = notpersist.id;
+			linkTextMark();
 		}
 
-		label1.htmltext = label1.text;
-		label1.updateLength = 0;
-
-		if(!hasLinkedTextMark)
-			linkTextMark();
+		
 
 		function linkTextMark(){
+		
 			if(marks){
 				marks.forEach(function(mark){
 
@@ -299,7 +301,7 @@ angular.module('easel', [])
 			});
 
 			}
-			hasLinkedTextMark = true;
+			
 		}
 
 		
