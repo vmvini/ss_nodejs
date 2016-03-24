@@ -12,6 +12,19 @@ angular.module('mapService', [])
 		return $http.post('/api/allTextMarks', textData);
 	};
 
+	textMarkService.removeTextMark = function(textMarkData){
+		return $http.post('/api/removeTextMark', textMarkData);
+	};
+
+	textMarkService.detachTextMarkFromTextNode = function(data){
+		return $http.post('/api/detachTextMarkFromTextNode', data);
+	};
+
+	textMarkService.updateTextMark = function(textMarkData){
+		return $http.post('/api/updateTextMark', textMarkData);
+	};
+
+
 	return textMarkService;
 
 })
@@ -45,6 +58,13 @@ angular.module('mapService', [])
 		return $http.post('/api/insertTextNode', textNodeData);
 	};
 
+	mapFactory.removeTextNode = function(textNodeData){
+		return $http.post('/api/removeTextNode', textNodeData);
+	};
+	
+	mapFactory.updateTextNode = function(textNodeData){
+		return $http.post('/api/updateTextNode', textNodeData);
+	};
 
 	mapFactory.allTextNodesOf = function(parentData){
 		//req.body.parentId

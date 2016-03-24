@@ -27,6 +27,8 @@
     this.createTextClickHandler = function(){
         var that = this;
         return function(e){
+          //PARA RESOLVER O PROBLEMA DE CLICAR NUMA MARCAÇÃO DE TEXTO, EU TENHO QUE 
+            //PEGAR O TARGET CORRETO. QUE É O StageFrame e nao o StageFrameMark
           var textStageFrame = e.target;
           var text = '';
 
@@ -140,7 +142,8 @@
             }*/
 
             if(textToUpdate){
-               //that.stageManager.updateText(textToUpdate, text, spanObjects);
+                //stageFrameText, newcontent, newhtmlContent, newmarks
+               that.stageManager.updateText(textToUpdate, text, html, spanObjects);
 
                textToUpdate = null;
             }

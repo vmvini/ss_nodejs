@@ -67,6 +67,38 @@ module.exports = function(app, express, io, db){
 
 	});
 
+	//remover text node
+	api.post('/removeTextNode', function(req, res){
+		var textId = req.body.textId;
+		//MATCH (mortm)-[]->(t:TextNode)-[]->(tm:TextMark) WHERE id(t)=197 DETACH DELETE t;
+		db.cypherQuery("MATCH (mortm)-[]->(t:TextNode)-[]->(tm:TextMark) WHERE id(t)="+textId+" DETACH DELETE t", function(err, result){
+			if(err){
+				res.send(err.message);
+			}
+			else
+				res.json({success:true});
+		});
+	});
+
+	//atualizar texto node
+	api.post('/updateTextNode', function(req, res){
+
+		db.updateNode(req.body.textId,  //retorna true ou false operação update
+			{
+				posx: req.body.posx,
+				posy: req.body.posy,
+				html: req.body.html,
+				content:req.body.content
+
+			}, function(uerr, node){
+				if(uerr){
+					res.send(uerr.message);
+				}
+				else
+					res.json(node);
+		});
+
+	});
 
 
 
@@ -163,6 +195,42 @@ module.exports = function(app, express, io, db){
 			}
 
 		);
+	});
+
+
+	//atualizar textmark
+	api.post('/updateTextMark', function(req, res){
+		db.updateNode(req.body.oldMark.dbId,  //retorna true ou false operação update
+		{
+			dbId: req.body.oldMark.dbId,
+			content:req.body.newMark.content,
+			startIndex: req.body.newMark.startIndex,
+			endIndex: req.body.newMark.endIndex,
+			key: req.body.newMark.key,
+			onlySpanTag: req.body.newMark.onlySpanTag
+
+		}, function(uerr, node){
+			if(uerr){
+				res.send(uerr.message);
+			}
+			else
+				res.json(node);
+		});
+	});
+
+
+	//apagar relacionamento entre um textmark e um textnode
+	api.post('/detachTextMarkFromTextNode', function(req, res){
+		var cypher = "MATCH (t:TextNode)-[r:MARK]->(tm:TextMark) WHERE id(t)="+req.body.textNodeId+" AND id(tm)="+req.body.textMarkId+" DELETE r";
+
+		db.cypherQuery(cypher, 
+			function(err, result){
+				if(err)
+					res.send(err.message);
+				else
+					res.json(result.data);
+			});
+
 	});
 
 

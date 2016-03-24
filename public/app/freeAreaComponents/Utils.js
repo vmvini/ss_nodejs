@@ -25,6 +25,10 @@ function normalizeString(string){
 	return string;
 }
 
+function removeAllSpaces(string){
+	return string.replace(/\s/g, '');
+}
+
 function removeHtmlExceptSpan(string){
 	var newstring = string.replace(/\<(?!span).*?\>/g, "");
 	var newstring2 = newstring.replace(/&nbsp;/gi,"");

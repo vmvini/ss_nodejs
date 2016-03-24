@@ -254,6 +254,103 @@ angular.module('easel', [])
 	}
 
 
+	function createRemoveTextNode(textNode){
+		return function(){
+			MapService.removeTextNode( {textId: textNode.id } )
+			.success(function(result){
+				stageFactory.currentFrame.removeChild(textNode);
+			});
+		};
+	}
+
+	function eraseTextMarks(textmarks, removeTextNode){
+		for(var i = 0; i < textmarks.length; i++){
+			TextMarksService.removeTextMark( { markId: textmarks[i].markId }  )
+			.success(function(result){
+				stageFactory.currentFrame.removeChild(textmarks[i]);
+				if(i == textmarks.length - 1){
+					removeTextNode();
+				}
+			});
+			
+		}
+	}
+
+
+	stageFactory.updateText = function(stageFrameText, newcontent, newhtmlContent, newmarks){
+		
+		if( removeAllSpaces(newcontent) == '' ){
+			//eraseTextMarks(stageFrameText.textmarks, createRemoveTextNode(stageFrameText) );
+			MapService.removeTextNode( {textId: stageFrameText.id } )
+			.success(function(result){
+				stageFactory.currentFrame.removeChild(stageFrameText);
+			});
+			return;
+		}
+		
+		stageFrameText.htmltext = newhtmlContent;
+		stageFrameText.text = newcontent;
+
+		MapService.updateTextNode( 
+			{   posx : stageFrameText.x,
+				posy : stageFrameText.y,
+				html : stageFrameText.htmltext,
+				content : stageFrameText.text,
+				textId: stageFrameText.id
+			} );
+
+		stageFrameText.removeMarks(stageFrameText); //remover retangulos desenhados
+
+		function getSimilarMarksBetweenOldAndNew(stageFrameText, newMarks, updatesimilar, removeLinkToDifferent){
+			var oldContent = '';
+			var newContent = '';
+			var oldMarks = stageFrameText.marks;
+			var equal = false;
+			for(var o = 0; o < oldMarks.length; o++){
+				equal = false;
+
+				for(var n = 0; n < newMarks.length; n++){
+
+					oldContent = removeAllSpaces(oldMarks[o].content);
+					newContent = removeAllSpaces(newMarks[n].content);
+					
+					if( oldContent == newContent ){
+						equal = true;
+						newMarks[n].dbId = oldMarks[o].dbId;
+						updatesimilar(newMarks[n], oldMarks[o]);
+
+					}
+				}
+				if(equal == false){
+					removeLinkToDifferent(stageFrameText, oldMarks[o]);
+				}
+
+			}
+			//array de propriedades de marcaçao
+			stageFrameText.marks = [];
+			//array de marcacoes desenhadas (retangulos) ou stageFrameMark
+			stageFrameText.textmarks = [];
+
+		}
+
+		getSimilarMarksBetweenOldAndNew(stageFrameText, newmarks, function(newMark, oldMark){
+			TextMarksService.updateTextMark({
+				oldMark:oldMark,
+				newMark:newMark
+			});
+		}, 
+		function(textNode, oldMark){
+			TextMarksService.detachTextMarkFromTextNode({
+				textNodeId: textNode.id,
+				textMarkId: oldMark.dbId
+			});
+		} );
+
+		linkTextMark(stageFrameText, newmarks);
+
+		
+	};
+
 
 	stageFactory.addText = function(text, x, y, marks, html, notpersist){
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
@@ -273,57 +370,50 @@ angular.module('easel', [])
 		}
 
 		label1.htmltext = html;
-
+		label1.marks = [];
 		stageFactory.currentFrame.addChildFrame(label1);
 		stageFactory.currentFrame.drawLastInserted();
 				
 
 		if(notpersist == undefined){ //deve persistir
-			
+
 			persistText(text, x, y, stageFactory.currentFrame.markId, html, function(data){
 				label1.id = data._id;
-				
-				linkTextMark();
-
-				
+				linkTextMark(label1, marks );
 			});
 		}
 		else{ //nao deve persistir
 			label1.id = notpersist.id;
-			linkTextMark();
+			linkTextMark(label1, marks );
 		}
 
-		
+	};
 
-		function linkTextMark(){
-			if(marks){
-				marks.forEach(function(mark){
+	function linkTextMark(stageFrameText, marks){
+		if(marks){
+			marks.forEach(function(mark){
 
-					if(!mark.dbId){
+				if(!mark.dbId){
 					//essa mark nao foi salva no banco ainda
-					persistMark(mark, label1.id, function(data){
+					persistMark(mark, stageFrameText.id, function(data){
 
 						mark.dbId = data.dbId;
-						stageFactory.drawMark(label1, mark);
+						stageFactory.drawMark(stageFrameText, mark);
+						stageFrameText.marks.push(mark);
 					} );
 				}
 				else{
 					//essa mark veio do banco de dados
-					stageFactory.drawMark(label1, mark);
+					stageFactory.drawMark(stageFrameText, mark);
+					stageFrameText.marks.push(mark);
 				}
 
 			});
 
-			}
-			
 		}
 
-		
+	}
 
-		
-		
-
-	};
 
 	stageFactory.setInitialScale = function(){
 		stageFactory.stage.scaleX = 0.1;
