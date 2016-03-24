@@ -254,42 +254,57 @@ angular.module('easel', [])
 	}
 
 
-	function createRemoveTextNode(textNode){
-		return function(){
-			MapService.removeTextNode( {textId: textNode.id } )
-			.success(function(result){
-				stageFactory.currentFrame.removeChild(textNode);
-			});
-		};
-	}
+	
+	function removeTextMarksFrames(marks){
+		if(marks){
+			for(var i = 0; i < marks.length; i++){
+				stageFactory.stage.removeChild(marks[i]);
 
-	function eraseTextMarks(textmarks, removeTextNode){
-		for(var i = 0; i < textmarks.length; i++){
-			TextMarksService.removeTextMark( { markId: textmarks[i].markId }  )
-			.success(function(result){
-				stageFactory.currentFrame.removeChild(textmarks[i]);
-				if(i == textmarks.length - 1){
-					removeTextNode();
+				var pos = stageFactory.currentFrame.frameObjects.indexOf(marks[i]);
+				if(pos !== -1){
+					stageFactory.currentFrame.frameObjects.splice(pos, 1);
 				}
-			});
-			
+
+			}
+			stageFactory.stage.update();	
 		}
 	}
 
+	function removeTextFrame(textNode){
+
+		removeTextMarksFrames(textNode.textmarks);
+		//removendo texto do stage
+		stageFactory.stage.removeChild(textNode);
+
+		//removendo texto do currentFrame
+		var pos = stageFactory.currentFrame.frameObjects.indexOf(textNode);
+		if(pos !== -1){
+			stageFactory.currentFrame.frameObjects.splice(pos, 1);
+		}
+
+		stageFactory.stage.update();
+	}
 
 	stageFactory.updateText = function(stageFrameText, newcontent, newhtmlContent, newmarks){
 		
+		if(stageFrameText.htmltext == newhtmlContent){
+			console.log("nao atualizou nada");
+			return;
+		}
+
 		if( removeAllSpaces(newcontent) == '' ){
 			//eraseTextMarks(stageFrameText.textmarks, createRemoveTextNode(stageFrameText) );
 			MapService.removeTextNode( {textId: stageFrameText.id } )
 			.success(function(result){
-				stageFactory.currentFrame.removeChild(stageFrameText);
+				removeTextFrame(stageFrameText);
 			});
 			return;
 		}
 		
 		stageFrameText.htmltext = newhtmlContent;
 		stageFrameText.text = newcontent;
+		//atualizar tamanho da hit area
+		createHitArea(stageFrameText);
 
 		MapService.updateTextNode( 
 			{   posx : stageFrameText.x,
@@ -299,7 +314,7 @@ angular.module('easel', [])
 				textId: stageFrameText.id
 			} );
 
-		stageFrameText.removeMarks(stageFrameText); //remover retangulos desenhados
+		removeTextMarksFrames(stageFrameText.textmarks);
 
 		function getSimilarMarksBetweenOldAndNew(stageFrameText, newMarks, updatesimilar, removeLinkToDifferent){
 			var oldContent = '';
@@ -351,6 +366,13 @@ angular.module('easel', [])
 		
 	};
 
+	function createHitArea(textElement){
+		var hit = new createjs.Shape();
+
+		hit.graphics.beginFill("#000").drawRect(0, 0, textElement.getBounds().width + 10, textElement.getMeasuredHeight() + 10);
+		textElement.hitArea = hit;
+	}
+
 
 	stageFactory.addText = function(text, x, y, marks, html, notpersist){
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
@@ -360,10 +382,7 @@ angular.module('easel', [])
 		label1.alpha = 1;
 		label1.lineWidth = 1000;
 
-		var hit = new createjs.Shape();
-
-		hit.graphics.beginFill("#000").drawRect(0, 0, label1.getBounds().width + 10, label1.getMeasuredHeight() + 10);
-		label1.hitArea = hit;
+		createHitArea(label1);
 
 		for(var i = 0; i < stageFactory.behaviors.length; i++){
 			stageFactory.behaviors[i].applyTo(label1);

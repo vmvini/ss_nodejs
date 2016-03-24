@@ -12,32 +12,7 @@ function StageFrame(stage2, parentFrame, stringtext, font, color){
 
 	this.stageTransform;
 
-	this.removeMarks = function(stageFrame){
-		
-		if(stageFrame.textmarks){
-			for(var tm = 0; tm < stageFrame.textmarks.length; tm++){
-			
-				this.stage2.removeChild(stageFrame.textmarks[tm]);
-				var k = this.frameObjects.indexOf(stageFrame.textmarks[tm]);
-				if(k !== -1)
-					this.frameObjects.splice(k, 1);
-			}
-		}
-	}
-
-	this.removeChild = function(stageFrame){
-
-		this.removeMarks(stageFrame);
-
-		this.stage2.removeChild(stageFrame);
-		var pos = this.frameObjects.indexOf(stageFrame);
-		if(pos !== -1){
-			this.frameObjects.splice(pos, 1);
-		}
-		this.stage2.update();
-	}
-
-
+	
 	this.addChildFrame = function(stageFrame){
 		
 		this.frameObjects.push(stageFrame);
@@ -108,30 +83,6 @@ function StageFrameMark(stage2, parentFrame){
 
 	
 
-	this.removeMarks = function(stageFrame){
-		//remover marcacoes se tiver
-		if(stageFrame.textmarks){
-			for(var tm = 0; tm < stageFrame.textmarks.length; tm++){
-			
-				this.stage2.removeChild(stageFrame.textmarks[tm]);
-				var k = this.frameObjects.indexOf(stageFrame.textmarks[tm]);
-				if(k !== -1)
-					this.frameObjects.splice(k, 1);
-			}
-		}
-	}
-
-	this.removeChild = function(stageFrame){
-
-		this.removeMarks(stageFrame);
-
-		this.stage2.removeChild(stageFrame);
-		var pos = this.frameObjects.indexOf(stageFrame);
-		if(pos !== -1){
-			this.frameObjects.splice(pos, 1);
-		}
-		this.stage2.update();
-	}
 
 
 	this.addChildFrame = function(stageFrame){
