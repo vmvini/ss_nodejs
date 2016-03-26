@@ -27,7 +27,7 @@
     this.createTextClickHandler = function(){
         var that = this;
         return function(e){
-          //PARA RESOLVER O PROBLEMA DE CLICAR NUMA MARCAÇÃO DE TEXTO, EU TENHO QUE 
+         //PARA RESOLVER O PROBLEMA DE CLICAR NUMA MARCAÇÃO DE TEXTO, EU TENHO QUE 
             //PEGAR O TARGET CORRETO. QUE É O StageFrame e nao o StageFrameMark
           var textStageFrame = e.target;
           var text = '';
@@ -37,12 +37,14 @@
           else 
               text = textStageFrame.text;
 
+         
           //colocando texto selecionado no editor
-          $('#froala-editor').froalaEditor('html.set', text);
+           $('#froala-editor').css('display', 'inline-block');
+           //ANTES PRECISO APAGAR QUE JA TEM NO EDITOR
+          $('#froala-editor').froalaEditor('html.set', '<p>Digite o texto aqui.</p>');
+          $('#froala-editor').froalaEditor('commands.selectAll');
+          $('#froala-editor').froalaEditor('html.insert', text, true);
 
-          $('#froala-editor').css('display', 'inline-block');
-
-          
           $('#froala-editor').css('top', that.stageManager.stage.mouseY);
           $('#froala-editor').css('left',that.stageManager.stage.mouseX);
 
@@ -61,6 +63,11 @@
        $('#froala-editor').css('top', e.clientY);
        $('#froala-editor').css('left', e.clientX);
 
+        //resetando conteudo 
+        $('#froala-editor').froalaEditor('html.set', '<p>Digite o texto aqui.</p>');
+        $('#froala-editor').froalaEditor('commands.selectAll');
+        $('#froala-editor').froalaEditor('html.insert', "<p>Digite seu texto aqui</p>", true);
+
        that.lastInsertTextPos = that.stageManager.translateMouseCoordinates(that.stageManager.stage, e.clientX, e.clientY); 
      };
 
@@ -77,8 +84,12 @@
           callback: function () {
           //this.html.insert('My New HTML');
           //texto selecionado : this.selection.text()
+          //this.commands.clearFormatting();
+          //$('#froala-editor').froalaEditor('commands.clearFormatting');
           this.colors.background("#FFFF00");
-        }
+         
+         
+          }
       });
     };
 
@@ -103,15 +114,27 @@
           
         return function(){
             var spanObjects = [];
-            var spans = $("p").find("span");
+
+            $('#froala-editor span:not([style])').replaceWith(function () {
+                    return $(this).text();
+            });
+
+            var spans =  $('#froala-editor span[style]'); //$("#froala-editor").find("span");
             //setando atributos de identificaçao em cada span
             for(var k=0; k< spans.length; k++ ){
              $(spans[k]).attr("i", k);
+            
            }
+           
 
            var html = $('#froala-editor').froalaEditor('html.get', false);
+           console.log("html");
+           console.log(html);
+          
 
-           var text = normalizeString( removeAllHtml( html ) );
+
+
+          var text = normalizeString( removeAllHtml( html ) );
 
           var textWithSpans = normalizeString( removeHtmlExceptSpan(html) );
            
@@ -121,10 +144,13 @@
             marked[i] = normalizeString( spans[i].textContent );
             var onlySpanTag = "<span style=\"background-color: rgb(255, 255, 0);\" i=\""+i+"\">";
             var startIndex = textWithSpans.indexOf(onlySpanTag);
+            //if(startIndex == -1)
+                //startIndex = textWithSpans.indexOf("<span i=\""+i+"\">");
             var endIndex = startIndex + marked[i].length;
                 //remover span tag anterior
                 textWithSpans =  textWithSpans.replace(onlySpanTag, '');
 
+              
                 var spanObj = {
                  content:marked[i],
                  startIndex:startIndex,
@@ -150,8 +176,9 @@
             else
               that.stageManager.addText(text, that.lastInsertTextPos.x, that.lastInsertTextPos.y, spanObjects, html );
             
-
+            $("#froala-editor").find("span").remove();
             $('#froala-editor').css('display', 'none');
+            
        
         }  
 
@@ -181,12 +208,15 @@
         this.createDblClickCanvasHandler()();
 
 
-        $('div#froala-editor').froalaEditor({
+        $('#froala-editor').froalaEditor({
         // Add the custom buttons in the toolbarButtons list, after the separator.
         toolbarButtons: ['insert', 'getHtml', 'remove'],
         toolbarButtonsMD: ['insert', 'getHtml', 'remove'],
         toolbarButtonsSM: ['insert', 'getHtml', 'remove'],
-        toolbarButtonsXS: ['insert', 'getHtml', 'remove']
+        toolbarButtonsXS: ['insert', 'getHtml', 'remove'],
+        htmlDoNotWrapTags: ['script', 'style', 'img'],
+        htmlAllowedTags: [],
+        multiLine: false
       });
 
     };

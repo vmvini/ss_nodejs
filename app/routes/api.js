@@ -233,6 +233,19 @@ module.exports = function(app, express, io, db){
 
 	});
 
+	api.post('/getAllMap', function(req, res){
+		//MATCH (m:Map {name:"teste 3"})-[]->(t)-[*]->(tm)  RETURN m, t, tm;
+		var cypher = "MATCH (m:Map)-[]->(t)-[*]->(tm) WHERE id(m)="+req.body.mapId+" RETURN DISTINCT m,t, tm";
+		db.cypherQuery(cypher, 
+			function(err, result){
+				if(err)
+					res.send(err.message);
+				else
+					res.json(result.data);
+			});
+
+	});
+
 
 
 

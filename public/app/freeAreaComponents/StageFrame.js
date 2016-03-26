@@ -70,12 +70,19 @@ StageFrame.prototype.constructor = StageFrame;
 
 
 //objeto que representa uma marcação de texto stage frame
-function StageFrameMark(stage2, parentFrame){
+function StageFrameMark(originFrame, stage2, parentFrame){
 	createjs.Shape.call(this);
 
 	this.stage2 = stage2;
 
+	this.originFrame = originFrame;
+
 	this.frameObjects = []; //objetos do tipo StageFrame
+	
+	if(originFrame != null){
+		this.frameObjects = originFrame.frameObjects;
+	}
+	
 
 	this.parentFrame = parentFrame;
 

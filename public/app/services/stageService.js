@@ -192,8 +192,8 @@ angular.module('easel', [])
 
 
 
-	stageFactory.drawRectangule = function(x, y, width, lineHeight){
-		var rect = new StageFrameMark( stageFactory.stage, stageFactory.currentFrame );
+	stageFactory.drawRectangule = function(originRect , x, y, width, lineHeight){
+		var rect = new StageFrameMark( originRect, stageFactory.stage, stageFactory.currentFrame );
 		rect.graphics.beginFill("#FFFF00").drawRect(x, y, width, lineHeight);
 		rect.alpha = 0.5;
 
@@ -204,7 +204,7 @@ angular.module('easel', [])
 	};
 
 	stageFactory.drawMark = function(textElement, mark){
-		console.log("desenhando marcacao");
+		
 		var drawnRect;
 		if(!textElement.textmarks)
 			textElement.textmarks = [];
@@ -213,8 +213,16 @@ angular.module('easel', [])
 
 			var rects = stageFactory.getMarkRectangule(textElement, coordinates, mark);
 
-			for(var r = 0; r < rects.length; r++){
-				drawnRect = stageFactory.drawRectangule(rects[r].x, rects[r].y, rects[r].width, coordinates.lineHeight );
+
+			var firstDrawnRect = stageFactory.drawRectangule(null, rects[0].x, rects[0].y, rects[0].width, coordinates.lineHeight );
+				firstDrawnRect.markId = mark.dbId;
+			for(var i = 0; i < stageFactory.behaviors.length; i++){
+				stageFactory.behaviors[i].applyTo(firstDrawnRect);
+			}
+			textElement.textmarks.push(firstDrawnRect);
+
+			for(var r = 1; r < rects.length; r++){
+				drawnRect = stageFactory.drawRectangule(firstDrawnRect, rects[r].x, rects[r].y, rects[r].width, coordinates.lineHeight );
 				drawnRect.markId = mark.dbId;
 
 				for(var i = 0; i < stageFactory.behaviors.length; i++){
@@ -331,6 +339,11 @@ angular.module('easel', [])
 					
 					if( oldContent == newContent ){
 						equal = true;
+						console.log("equal mark content");
+						console.log("old");
+						console.log(oldMarks[o]);
+						console.log("new");
+						console.log(newMarks[n]);
 						newMarks[n].dbId = oldMarks[o].dbId;
 						updatesimilar(newMarks[n], oldMarks[o]);
 
