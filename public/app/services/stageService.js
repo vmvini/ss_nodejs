@@ -216,6 +216,7 @@ angular.module('easel', [])
 
 			var firstDrawnRect = stageFactory.drawRectangule(null, rects[0].x, rects[0].y, rects[0].width, coordinates.lineHeight );
 				firstDrawnRect.markId = mark.dbId;
+				firstDrawnRect.referredTextFrame = textElement;
 			for(var i = 0; i < stageFactory.behaviors.length; i++){
 				stageFactory.behaviors[i].applyTo(firstDrawnRect);
 			}
@@ -224,7 +225,7 @@ angular.module('easel', [])
 			for(var r = 1; r < rects.length; r++){
 				drawnRect = stageFactory.drawRectangule(firstDrawnRect, rects[r].x, rects[r].y, rects[r].width, coordinates.lineHeight );
 				drawnRect.markId = mark.dbId;
-
+				drawnRect.referredTextFrame = textElement;
 				for(var i = 0; i < stageFactory.behaviors.length; i++){
 					stageFactory.behaviors[i].applyTo(drawnRect);
 				}

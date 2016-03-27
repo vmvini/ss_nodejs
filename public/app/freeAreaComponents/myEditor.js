@@ -29,7 +29,14 @@
         return function(e){
          //PARA RESOLVER O PROBLEMA DE CLICAR NUMA MARCAÇÃO DE TEXTO, EU TENHO QUE 
             //PEGAR O TARGET CORRETO. QUE É O StageFrame e nao o StageFrameMark
-          var textStageFrame = e.target;
+          
+           var textStageFrame;
+          if(e.target instanceof StageFrame)
+            textStageFrame = e.target;
+          else 
+            textStageFrame = e.target.referredTextFrame;
+
+
           var text = '';
 
           if(textStageFrame.htmltext)
