@@ -60,15 +60,15 @@
       return function(e){
 
        $('#froala-editor').css('display', 'inline-block');
-       $('#froala-editor').css('top', e.clientY);
-       $('#froala-editor').css('left', e.clientX);
+       $('#froala-editor').css('top', that.stageManager.stage.mouseY);
+       $('#froala-editor').css('left', that.stageManager.stage.mouseX);
 
         //resetando conteudo 
         $('#froala-editor').froalaEditor('html.set', '<p>Digite o texto aqui.</p>');
         $('#froala-editor').froalaEditor('commands.selectAll');
         $('#froala-editor').froalaEditor('html.insert', "<p>Digite seu texto aqui</p>", true);
 
-       that.lastInsertTextPos = that.stageManager.translateMouseCoordinates(that.stageManager.stage, e.clientX, e.clientY); 
+       that.lastInsertTextPos = that.stageManager.translateMouseCoordinates(that.stageManager.stage, that.stageManager.stage.mouseX, that.stageManager.stage.mouseY); 
      };
 
 
@@ -114,7 +114,7 @@
           
         return function(){
             var spanObjects = [];
-
+            //removendo spans com estilo invalido
             $('#froala-editor span:not([style])').replaceWith(function () {
                     return $(this).text();
             });
@@ -128,8 +128,7 @@
            
 
            var html = $('#froala-editor').froalaEditor('html.get', false);
-           console.log("html");
-           console.log(html);
+           
           
 
 

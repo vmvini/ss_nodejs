@@ -71,9 +71,9 @@ module.exports = function(app, express, io, db){
 	api.post('/removeTextNode', function(req, res){
 		var textId = req.body.textId;
 		//MATCH (mortm)-[]->(t:TextNode)-[]->(tm:TextMark) WHERE id(t)=197 DETACH DELETE t;
-		db.cypherQuery("MATCH (mortm)-[]->(t:TextNode)-[]->(tm:TextMark) WHERE id(t)="+textId+" DETACH DELETE t", function(err, result){
+		db.cypherQuery("MATCH (t:TextNode)-[]-() WHERE id(t)="+textId+" DETACH DELETE t;", function(err, result){
 			if(err){
-				res.send(err.message);
+				res.json({success:false, message:err.message});
 			}
 			else
 				res.json({success:true});

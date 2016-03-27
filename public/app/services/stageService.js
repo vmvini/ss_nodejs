@@ -304,6 +304,8 @@ angular.module('easel', [])
 			//eraseTextMarks(stageFrameText.textmarks, createRemoveTextNode(stageFrameText) );
 			MapService.removeTextNode( {textId: stageFrameText.id } )
 			.success(function(result){
+				console.log(result);
+				console.log("removido: " + stageFrameText.id);
 				removeTextFrame(stageFrameText);
 			});
 			return;
@@ -339,11 +341,6 @@ angular.module('easel', [])
 					
 					if( oldContent == newContent ){
 						equal = true;
-						console.log("equal mark content");
-						console.log("old");
-						console.log(oldMarks[o]);
-						console.log("new");
-						console.log(newMarks[n]);
 						newMarks[n].dbId = oldMarks[o].dbId;
 						updatesimilar(newMarks[n], oldMarks[o]);
 
@@ -403,19 +400,22 @@ angular.module('easel', [])
 
 		label1.htmltext = html;
 		label1.marks = [];
-		stageFactory.currentFrame.addChildFrame(label1);
-		stageFactory.currentFrame.drawLastInserted();
+		
 				
 
 		if(notpersist == undefined){ //deve persistir
 
 			persistText(text, x, y, stageFactory.currentFrame.markId, html, function(data){
 				label1.id = data._id;
+				stageFactory.currentFrame.addChildFrame(label1);
+				stageFactory.currentFrame.drawLastInserted();
 				linkTextMark(label1, marks );
 			});
 		}
 		else{ //nao deve persistir
 			label1.id = notpersist.id;
+			stageFactory.currentFrame.addChildFrame(label1);
+			stageFactory.currentFrame.drawLastInserted();
 			linkTextMark(label1, marks );
 		}
 
