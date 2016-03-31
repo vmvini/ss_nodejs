@@ -82,9 +82,10 @@
     };
 
     this.configAddTextMarkButton = function(){
-        $.FroalaEditor.DefineIcon('insert', {NAME: 'plus'});
+      $.FroalaEditor.DefineIconTemplate('addMark', '<i class="fa fa-pencil-square" style="color:yellow; background-color:black;"></i>'); 
+        $.FroalaEditor.DefineIcon('insert', {NAME: 'plus', template:'addMark'});
         $.FroalaEditor.RegisterCommand('insert', {
-          title: 'Insert Mark',
+          title: 'Realçar',
           focus: true,
           undo: true,
           refreshAfterCallback: true,
@@ -102,9 +103,12 @@
 
 
     this.configRemoveTextMarkButton = function(){
-       $.FroalaEditor.DefineIcon('remove', {NAME:'minus'});
+      //<i class="fa fa-pencil-square"></i>
+
+       $.FroalaEditor.DefineIconTemplate('removeMark', '<i class="fa fa-pencil-square" style="color:grey;"></i>'); 
+       $.FroalaEditor.DefineIcon('remove', {NAME:'minus', template:'removeMark'});
        $.FroalaEditor.RegisterCommand('remove', {
-        title: 'Remove Mark',
+        title: 'remover realce',
         focus:true,
         undo:true,
         refreshAfterCallback:true,
@@ -193,10 +197,13 @@
 
 
     this.configEnterTextButton = function(callback){
-       $.FroalaEditor.DefineIcon('getHtml', {NAME: 'info'});
+      //<i class="fa fa-pencil-square"></i>
+       //<i class="fa fa-play"></i>
+       $.FroalaEditor.DefineIconTemplate('enterButton', '<i class="fa fa-play"></i>'); 
+       $.FroalaEditor.DefineIcon('enterText', {NAME: 'enterText', template:'enterButton'});
        var that = this;
-       $.FroalaEditor.RegisterCommand('getHtml', {
-        title: 'Get HTML',
+       $.FroalaEditor.RegisterCommand('enterText', {
+        title: 'Inserir Texto',
         focus: true,
         undo: true,
         refreshAfterCallback:true,
@@ -216,13 +223,14 @@
 
         $('#froala-editor').froalaEditor({
         // Add the custom buttons in the toolbarButtons list, after the separator.
-        toolbarButtons: ['insert', 'getHtml', 'remove'],
-        toolbarButtonsMD: ['insert', 'getHtml', 'remove'],
-        toolbarButtonsSM: ['insert', 'getHtml', 'remove'],
-        toolbarButtonsXS: ['insert', 'getHtml', 'remove'],
+        toolbarButtons: ['enterText', 'insert', 'remove'],
+        toolbarButtonsMD:  ['enterText', 'insert', 'remove'],
+        toolbarButtonsSM:  ['enterText', 'insert', 'remove'],
+        toolbarButtonsXS: ['enterText', 'insert', 'remove'],
         htmlDoNotWrapTags: ['script', 'style', 'img'],
         htmlAllowedTags: [],
-        multiLine: false
+        multiLine: false,
+        theme:'dark'
       });
 
     };
