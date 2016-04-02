@@ -14,6 +14,17 @@ angular.module('easel', [])
 	canvasProps.canvas.width = canvasProps.width;
 	canvasProps.canvas.height = canvasProps.height;
 
+	canvasProps.reset = function(){
+		canvasProps.id = "myCanvas";
+		canvasProps.width = window.innerWidth;
+		canvasProps.height = window.innerHeight;
+		canvasProps.max_zoom = 7;
+		canvasProps.min_zoom = 0.1;
+		canvasProps.canvas = document.getElementById(canvasProps.id);
+		canvasProps.canvas.width = canvasProps.width;
+		canvasProps.canvas.height = canvasProps.height;
+	}
+
 	return canvasProps;
 
 })
@@ -38,9 +49,22 @@ angular.module('easel', [])
 	var mapkey = '';
 
 	stageFactory.setMap = function(mapId){
+		CanvasProps.reset();
 		mapkey = mapId;
 		stageFactory.originFrame.id = mapkey;
 		stageFactory.originFrame.markId = mapkey;
+
+		stageFactory.canvasProps = CanvasProps;
+	
+	stageFactory.stage = new createjs.Stage(CanvasProps.id);
+
+	stageFactory.listenerManager = new EventListenerManager();
+
+	stageFactory.behaviors = [];
+
+	stageFactory.currentFrame = new StageFrame(stageFactory.stage); //primeiro frame é vazio
+
+	stageFactory.originFrame = stageFactory.currentFrame;
 	}
 
 	//salva texto no banco de dados
@@ -551,9 +575,10 @@ angular.module('easel', [])
 
 	var configurator = {};
 
-	
 
 	configurator.config = function(mapId){
+			console.log("esta configurando stage");
+
 
 		StageManagerService.setMap(mapId);	
 		

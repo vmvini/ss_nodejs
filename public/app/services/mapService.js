@@ -71,6 +71,10 @@ angular.module('mapService', [])
 		return $http.post('/api/allSubTextNodesOf', parentData);
 	};
 
+	mapFactory.getAllMap = function(mindMapData){
+		return $http.post('/api/getAllMap', mindMapData);
+	}
+
 
 
 	return mapFactory;

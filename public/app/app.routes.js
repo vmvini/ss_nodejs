@@ -12,7 +12,12 @@ angular.module('appRoutes', ['ngRoute'])
 			templateUrl: 'app/views/pages/free_area.html',
 			controller: 'FreeAreaController',
 			controllerAs: 'fareac'
-		});
+		})
+		.when('/mindmap/:mapId',{
+			templateUrl: 'app/views/pages/graph_view.html',
+			controller: 'MindMapController',
+			controllerAs: 'mindMapCtrl'
+		})
 
 
 	$locationProvider.html5Mode(true);

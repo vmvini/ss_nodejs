@@ -13,6 +13,7 @@ angular.module('freeArea', [])
 
 	MapService.AllFirstNodes(vm.mapData)
 		.success(function(data){
+
 			vm.firstNodes = data;
 
 			vm.firstNodes.forEach(function(each){
@@ -21,6 +22,7 @@ angular.module('freeArea', [])
 				TextMarksService.allTextMarks({ textId: each._id } )
 					.success(function(marks){
 						StageManagerService.addText(text, each.posx, each.posy, marks, each.html, { id:each._id });
+						console.log("nós desenhados");
 					});
 				
 			});

@@ -30,6 +30,13 @@
 	<script type="text/javascript" src="app/freeAreaComponents/froala/js/froala_editor.min.js"></script>
 	<script type="text/javascript" src="app/freeAreaComponents/froala/js/plugins/colors.min.js"></script>
 
+
+	<!-- D3 JS -->
+	<script type="text/javascript" src="app/d3js/d3.min.js"></script>
+
+	<!-- COMPONENTS MIND MAP -->
+	<script type="text/javascript" src="app/mindMapComponents/mindmapDrawer2.js"></script>
+
 	<!-- EASEL JS -->
 	<script type="text/javascript" src="app/easel08.js"></script>
 
@@ -48,19 +55,29 @@
 	<!-- Controllers -->
 	<script type="text/javascript" src="app/controllers/mapController.js"></script>
 	<script type="text/javascript" src="app/controllers/freeareaController.js"></script>
+	<script type="text/javascript" src="app/controllers/mindmapController.js"></script>
 	<!-- ROUTES -->
 	<script type="text/javascript" src="app/app.routes.js"></script>
 	<!-- APP -->
 	<!-- para entender o caminho app/app.js veja: app.use(express.static(__dirname + '/public')); em server.js -->
 	<script type="text/javascript" src="app/app.js"></script>
 
+
+	<!-- SYNTHETIC STUDY STYLE -->
+	<link rel="stylesheet" href="app/views/pages/synthetic_style.css" type="text/css"/>
+
+
 </head>
 
 <body>
 
-	<main class="container">
-		<div ng-view></div>
-	</main>
+
+	<!--main class="container"-->
+	<!--div class="page_content"-->
+		<div class="page_content" ng-view></div>
+	<!--/div-->
+	<!--/main-->
+
 
 </body>
 
