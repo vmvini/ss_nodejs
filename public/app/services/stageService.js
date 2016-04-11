@@ -50,13 +50,7 @@ angular.module('easel', [])
 
 	stageFactory.setMap = function(mapId){
 		CanvasProps.reset();
-		mapkey = mapId;
-		stageFactory.originFrame.id = mapkey;
-		stageFactory.originFrame.markId = mapkey;
-
-		stageFactory.canvasProps = CanvasProps;
-	
-	stageFactory.stage = new createjs.Stage(CanvasProps.id);
+		stageFactory.stage = new createjs.Stage(CanvasProps.id);
 
 	stageFactory.listenerManager = new EventListenerManager();
 
@@ -65,6 +59,14 @@ angular.module('easel', [])
 	stageFactory.currentFrame = new StageFrame(stageFactory.stage); //primeiro frame é vazio
 
 	stageFactory.originFrame = stageFactory.currentFrame;
+
+
+		
+		mapkey = mapId;
+		stageFactory.originFrame.id = mapkey;
+		stageFactory.originFrame.markId = mapkey;
+
+		
 	}
 
 	//salva texto no banco de dados
@@ -594,6 +596,20 @@ angular.module('easel', [])
 		var editorTextBehavior = new MyEditorTextBehavior(myEditor, StageManagerService.listenerManager);
 
 		StageManagerService.behaviors.push(editorTextBehavior);
+
+
+		CanvasProps.canvas.addEventListener("contextmenu", function(e){
+			e.preventDefault();
+			console.log(e);
+			$('#context_menu').css('top', e.clientY);
+			 $('#context_menu').css('left', e.clientX);
+			 $('#context_menu').css('display', 'inline-block');
+			 
+		});
+
+		$('#context_menu ul li').on("click", function(){
+			 $('#uploadImageInput').trigger('click');
+		});
 
 
 	};

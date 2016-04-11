@@ -249,9 +249,13 @@ module.exports = function(app, express, io, db){
 
 
 	api.post('/getAllMap', function(req, res){
+
+		/*
+		 statement: 'MATCH path = (m:Map)-[]->(t)-[*]->(tm) WHERE id(m)='+req.body.mapId+' RETURN path;',
+		*/
 		 var statementsOne = {
             statements: [{
-                statement: 'MATCH path = (m:Map)-[]->(t)-[*]->(tm) WHERE id(m)='+req.body.mapId+' RETURN path;',
+                statement: 'MATCH path = (m:Map)-[]->(t) WHERE id(m)='+req.body.mapId+' RETURN path;',
                 resultDataContents:["graph"]
             }]
         };

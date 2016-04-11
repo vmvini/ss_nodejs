@@ -30,7 +30,7 @@ function createGraph(data){
 
 function drawMindMap(graphData){
 
-   var get_color = {"TextMark":"#FFFF00", "TextNode":"#d3d3d3", "Map":"#F28D8D"};
+   var get_color = {"TextMark":"#FFFF81", "TextNode":"#FFFF81", "Map":"#FFFF81"};
 
   createGraph(graphData);
   var width = 960,

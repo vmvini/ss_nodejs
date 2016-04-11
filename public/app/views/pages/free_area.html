@@ -181,6 +181,31 @@ body{
 
 }
 
+#context_menu{
+	display:none;
+	
+	background-color:#353535;
+	z-index:10;
+	position:absolute;
+	top:0;
+	left:0;
+	color:white;
+	padding:0;
+	border-radius:5px;
+	font-family: 'Quicksand', sans-serif;
+
+}
+
+#context_menu ul{
+	list-style:none;
+	padding:4px;
+}
+
+#context_menu ul li{
+	cursor:pointer;
+}
+
+input[type="file"] { display: none; }
 
 </style>
 
@@ -307,4 +332,11 @@ body{
 
 	<div id="froala-editor">
 	  	<p>Digite seu texto aqui</p>
+	</div>
+
+	<div id="context_menu">
+		<ul>
+			<li><i class="fa fa-picture-o"></i>  Inserir Imagem</li>
+		</ul>
+		<input class="image_uploader" type="file" name="thumb" id="uploadImageInput" />
 	</div>

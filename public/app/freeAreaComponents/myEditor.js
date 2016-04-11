@@ -184,10 +184,11 @@
                textToUpdate = null;
             }
             else
-              that.stageManager.addText(text, that.lastInsertTextPos.x, that.lastInsertTextPos.y, spanObjects, html );
+                that.stageManager.addText(text, that.lastInsertTextPos.x, that.lastInsertTextPos.y, spanObjects, html );
             
-            $("#froala-editor").find("span").remove();
             $('#froala-editor').css('display', 'none');
+            $("#froala-editor").find("span").remove();
+            
             
        
         }  
@@ -197,8 +198,6 @@
 
 
     this.configEnterTextButton = function(callback){
-      //<i class="fa fa-pencil-square"></i>
-       //<i class="fa fa-play"></i>
        $.FroalaEditor.DefineIconTemplate('enterButton', '<i class="fa fa-play"></i>'); 
        $.FroalaEditor.DefineIcon('enterText', {NAME: 'enterText', template:'enterButton'});
        var that = this;
@@ -209,7 +208,6 @@
         refreshAfterCallback:true,
         callback: callback
       });
-
     };
 
 
@@ -217,7 +215,10 @@
     this.initialize = function(){
         this.configAddTextMarkButton();
         this.configRemoveTextMarkButton();
+
         this.configEnterTextButton( this.createEnterTextHandler() );
+
+
         this.createDblClickCanvasHandler()();
 
 
