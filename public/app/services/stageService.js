@@ -410,6 +410,31 @@ angular.module('easel', [])
 		textElement.hitArea = hit;
 	}
 
+	stageFactory.downloadImage = function(path){
+		var image = new Image();
+	    image.src = path;
+	    image.onload = stageFactory.addImage(this.lastImagePos.x, this.lastImagePos.y);
+	}
+
+	stageFactory.addImage = function(x, y){
+	
+
+		return function(event){
+			var image = event.target;
+			var bitmap = new createjs.Bitmap(image);
+			var pos = stageFactory.translateMouseCoordinates(stageFactory.stage, x, y);
+
+			bitmap.x = pos.x;
+			bitmap.y = pos.y;
+	    	stageFactory.stage.addChild(bitmap);
+	    	stageFactory.stage.update();
+
+	    	var hitArea = new createjs.Shape;   
+			hitArea.graphics.beginFill("#000").drawRect(0,0,bitmap.getBounds().width,bitmap.getBounds().height);       
+			bitmap.hitArea  = hitArea;
+		}
+	}
+
 
 	stageFactory.addText = function(text, x, y, marks, html, notpersist){
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
@@ -601,6 +626,13 @@ angular.module('easel', [])
 		CanvasProps.canvas.addEventListener("contextmenu", function(e){
 			e.preventDefault();
 			console.log(e);
+
+			StageManagerService.lastImagePos = {
+				x: StageManagerService.stage.mouseX,
+				y: StageManagerService.stage.mouseY
+
+			};
+
 			$('#context_menu').css('top', e.clientY);
 			 $('#context_menu').css('left', e.clientX);
 			 $('#context_menu').css('display', 'inline-block');
@@ -611,6 +643,12 @@ angular.module('easel', [])
 			 $('#uploadImageInput').trigger('click');
 		});
 
+		$('#uploadImageInput').on("change", function(event){
+			var tmppath = URL.createObjectURL(event.target.files[0]);
+			//console.log(this.value);
+			$('#context_menu').css('display', 'none');
+			StageManagerService.downloadImage(tmppath);
+		});
 
 	};
 
