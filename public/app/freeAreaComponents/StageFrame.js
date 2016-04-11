@@ -69,6 +69,28 @@ StageFrame.prototype.constructor = StageFrame;
 
 
 
+
+
+//objeto que representa imagem
+function StageFrameImage(image, stage2, parentFrame){
+	createjs.Bitmap.call(this, image);
+	this.parentFrame = parentFrame;
+	this.stage2 = stage2;
+
+	this.drawFrame = function(){
+		
+		this.stage2.addChild(this);
+		this.stage2.update();
+		
+	};
+
+}
+StageFrameImage.prototype = new createjs.Bitmap();
+StageFrameImage.prototype.constructor = StageFrameImage;
+
+
+
+
 //objeto que representa uma marcação de texto stage frame
 function StageFrameMark(originFrame, stage2, parentFrame){
 	createjs.Shape.call(this);

@@ -421,17 +421,28 @@ angular.module('easel', [])
 
 		return function(event){
 			var image = event.target;
-			var bitmap = new createjs.Bitmap(image);
+			//StageFrameImage(image, stage2, parentFrame)
+			var bitmap = new StageFrameImage(image, stageFactory.stage, stageFactory.currentFrame );
 			var pos = stageFactory.translateMouseCoordinates(stageFactory.stage, x, y);
 
 			bitmap.x = pos.x;
 			bitmap.y = pos.y;
-	    	stageFactory.stage.addChild(bitmap);
-	    	stageFactory.stage.update();
+
+			for(var i = 0; i < stageFactory.behaviors.length; i++){
+				if(stageFactory.behaviors[i] instanceof ZoomBehavior){
+					stageFactory.behaviors[i].applyTo(bitmap);
+				}
+			}
+
+	    	//stageFactory.stage.addChild(bitmap);
+	    	//stageFactory.stage.update();
 
 	    	var hitArea = new createjs.Shape;   
 			hitArea.graphics.beginFill("#000").drawRect(0,0,bitmap.getBounds().width,bitmap.getBounds().height);       
 			bitmap.hitArea  = hitArea;
+
+			stageFactory.currentFrame.addChildFrame(bitmap);
+			stageFactory.currentFrame.drawLastInserted();
 		}
 	}
 
