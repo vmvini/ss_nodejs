@@ -1,5 +1,26 @@
 angular.module('mapService', [])
 
+.factory('UploadService', function($http){
+	var service = {};
+	service.uploadFileToUrl = function(file, url){
+		var fd = new FormData();
+		fd.append('file', file);
+		return $http.post(url, fd, {
+			transformRequest: angular.identity,
+			headers: {'Content-Type':undefined}
+		});
+		
+	};
+
+	service.uploadImage = function(file){
+		return service.uploadFileToUrl(file, "/upload");
+	}
+
+	return service;
+
+})
+
+
 .factory('TextMarksService', function($http){
 
 	var textMarkService = {};

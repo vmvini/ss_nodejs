@@ -4,7 +4,6 @@ module.exports = function(app, express, io, db){
 	//Router abstrai as requisições http
 	var api = express.Router();
 
-	
 	//criar rota para inserir mapa mental:
 	api.post('/insertMindMap', function(req, res){
 

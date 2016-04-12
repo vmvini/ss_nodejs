@@ -434,9 +434,6 @@ angular.module('easel', [])
 				}
 			}
 
-	    	//stageFactory.stage.addChild(bitmap);
-	    	//stageFactory.stage.update();
-
 	    	var hitArea = new createjs.Shape;   
 			hitArea.graphics.beginFill("#000").drawRect(0,0,bitmap.getBounds().width,bitmap.getBounds().height);       
 			bitmap.hitArea  = hitArea;
@@ -636,7 +633,7 @@ angular.module('easel', [])
 
 		CanvasProps.canvas.addEventListener("contextmenu", function(e){
 			e.preventDefault();
-			console.log(e);
+			
 
 			StageManagerService.lastImagePos = {
 				x: StageManagerService.stage.mouseX,
@@ -651,14 +648,17 @@ angular.module('easel', [])
 		});
 
 		$('#context_menu ul li').on("click", function(){
-			 $('#uploadImageInput').trigger('click');
+			$('#uploadImageInput').trigger('click');
 		});
 
-		$('#uploadImageInput').on("change", function(event){
-			var tmppath = URL.createObjectURL(event.target.files[0]);
+		$('#uploadImageInput').change(function(event){
+			//var tmppath = URL.createObjectURL(event.target.files[0]);
 			//console.log(this.value);
+		//	$('.image_submit').trigger('click');
 			$('#context_menu').css('display', 'none');
-			StageManagerService.downloadImage(tmppath);
+			
+
+			
 		});
 
 	};

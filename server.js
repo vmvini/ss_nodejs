@@ -1,6 +1,11 @@
 //sudo npm install express body-parser morgan --save
 var express = require('express');
 var bodyParser = require('body-parser');
+
+var fs = require('fs-extra');  
+var path = require('path');  
+var busboy = require('connect-busboy');
+
 var morgan = require('morgan');
 //npm install node-neo4j --save
 var neo4j = require('node-neo4j');
@@ -31,10 +36,15 @@ app.use(bodyParser.json());
 //middleware morgan para fazer logs de todos os requests no console
 app.use(morgan('dev'));
 
+app.use(busboy());
+
+
 //adicionando middleware que trata todos arquivos estaticos
 //isso faz com que dentro dos arquivos estaticos eu nao preciso especificar o caminho citando a pasta /public
 //pois eles saberão que qualquer coisa estatica está dentro de /public
 app.use(express.static(__dirname + '/public'));
+
+
 
 
 /*
@@ -44,10 +54,34 @@ app.use(express.static(__dirname + '/public'));
 */
 var api = require('./app/routes/api')(app, express, io, db);
 
+
+
 //registrando api para uso pelo app. 
 //todas as rotas dessa api deverão ser acessadas com /api antes.
 //por ex: localhost:3010/api/signup
 app.use('/api', api);
+
+
+
+app.route('/upload')
+    .post(function (req, res, next) {
+    	console.log("requisitou  /upload");
+        var fstream;
+        req.pipe(req.busboy);
+        req.busboy.on('file', function (fieldname, file, filename) {
+            console.log("Uploading: " + filename);
+
+            //Path where image will be uploaded
+            fstream = fs.createWriteStream(__dirname + '/public' + '/img/' + filename);
+            console.log("criou diretorio");
+            file.pipe(fstream);
+            fstream.on('close', function () {    
+                console.log("Upload Finished of " + filename);              
+                //res.redirect('back');           //where to go next
+                res.json({filePath:'/img/' + filename});
+            });
+        });
+    });
 
 
 //registrando funcao anonima ao evento de requisição get em qualquer endereço

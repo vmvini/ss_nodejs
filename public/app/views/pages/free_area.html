@@ -338,5 +338,22 @@ input[type="file"] { display: none; }
 		<ul>
 			<li><i class="fa fa-picture-o"></i>  Inserir Imagem</li>
 		</ul>
-		<input class="image_uploader" type="file" name="thumb" id="uploadImageInput" />
+
+		<form ng-controller="uploadCtrl as up" name="up.upload_form" enctype="multipart/form-data">
+			
+			<input 
+			  type="file"
+
+			   ngf-select="up.submit()"  
+               ng-model="up.file" 
+               name="file" 
+               ngf-pattern="'image/*'"
+               accept="image/*" 
+               ngf-max-size="100MB" 
+               id="uploadImageInput" />
+			
+			<input class="image_submit" style="display:none;" type='submit' ng-click="up.submit()" />
+
+		</form>
+		
 	</div>

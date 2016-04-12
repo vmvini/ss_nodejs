@@ -13,6 +13,8 @@
     "body-parser": "~1.15.0",
     "express": "~4.13.4",
     "node-neo4j": "~2.0.3",
-    "socket.io": "~1.4.5"
+    "socket.io": "~1.4.5",
+    "connect-busboy": "0.0.2",
+    "fs-extra": "~0.26.7"
   }
 }
