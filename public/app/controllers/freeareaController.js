@@ -1,6 +1,6 @@
 angular.module('freeArea', [])
 
-.controller('FreeAreaController', function(MapService, TextMarksService,  socketio, $routeParams, StageManagerService, StageConfigurator){
+.controller('FreeAreaController', function(MapService, ImageService, TextMarksService,  socketio, $routeParams, StageManagerService, StageConfigurator){
 
 //	console.log($routeParams.mapId);
 
@@ -13,6 +13,18 @@ angular.module('freeArea', [])
 
 	MapService.AllFirstNodes(vm.mapData)
 		.success(function(data){
+
+			ImageService.getImages({parentId: vm.mapData.mapId})
+			.success(function(images){
+				
+				if(images.length > 0){
+					images.forEach(function(image){
+						StageManagerService.downloadImage(image.path, image._id, image.x, image.y);
+					});
+				}
+				
+			})
+			
 
 			vm.firstNodes = data;
 

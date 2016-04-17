@@ -21,6 +21,28 @@ angular.module('mapService', [])
 })
 
 
+.factory('ImageService', function($http){
+
+	var imageService = {};
+
+	imageService.getImages = function(data){
+		return $http.post('/api/getImages', data);
+
+	};
+
+	imageService.addImage = function(data){
+		return $http.post('/api/addImage', data);
+	};
+
+	imageService.removeImage = function(data){
+		return $http.post('/api/removeImage', data);
+	}
+
+	return imageService;
+
+})
+
+
 .factory('TextMarksService', function($http){
 
 	var textMarkService = {};

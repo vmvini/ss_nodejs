@@ -1,8 +1,71 @@
-module.exports = function(app, express, io, db){
+module.exports = function(app, express, io, db, fs){
 
 	//pegando o objeto router do expressjs.
 	//Router abstrai as requisições http
 	var api = express.Router();
+
+
+	api.post('/addImage', function(req, res){
+
+		db.insertNode(
+			{
+				path: req.body.path,
+				x: req.body.x,
+				y: req.body.y
+			},
+			'IMG',
+			function(err, result){
+				if(err)
+					res.send(err.message);
+				else{
+					db.insertRelationship(req.body.parentId, result._id, 'HAS', {}, function(Rerr, Rresult){
+						if(Rerr)
+							res.send(Rerr.message);
+						else
+							res.json(result);
+					});
+				}	
+			}
+
+		);
+
+	});
+
+	api.post('/getImages', function(req, res){
+		db.cypherQuery("MATCH (t)-[r:HAS]->(img:IMG) WHERE id(t)="+ req.body.parentId +" RETURN img", function(err, result){
+			if(err){
+				res.send(err.message);
+			}
+			else
+				res.json(result.data);
+		});
+	});
+
+	api.post('/removeImage', function(req, res){
+
+		var finalPath = "/home/vmvini/Dropbox/ADS_QUINTO_PERIODO/tcc/SS_nodejs/public" + req.body.path;
+		console.log("removendo ");
+		console.log(finalPath);
+		fs.remove(finalPath, function(err){
+			if(err)
+				console.log("erro ao remover imagem: " + err);
+			else{
+
+				db.cypherQuery("MATCH (img:IMG {path:'"+req.body.path+"'}) DETACH DELETE img", function(err, result){
+					if(err){
+						res.send(err.message);
+					}
+					else
+						res.json(result.data);
+				});
+				console.log("sucesso ao remover imagem");
+			}
+
+		});
+
+		
+	});
+
 
 	//criar rota para inserir mapa mental:
 	api.post('/insertMindMap', function(req, res){

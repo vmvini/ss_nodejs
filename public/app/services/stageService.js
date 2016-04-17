@@ -30,7 +30,7 @@ angular.module('easel', [])
 })
 
 
-.factory('StageManagerService', function(CanvasProps, MapService, TextMarksService){
+.factory('StageManagerService', function(CanvasProps, MapService, ImageService, TextMarksService){
 
 	var stageFactory = {};
 
@@ -102,15 +102,7 @@ angular.module('easel', [])
 		return word.getBounds().width;
 	};
 
-	/*
-	stageFactory.generateHtmlText = function(textElement, mark){
-		textElement.htmltext = addSubstringAtPosition(mark.onlySpanTag, textElement.htmltext, mark.startIndex + textElement.updateLength );
-		textElement.updateLength += mark.onlySpanTag.length;
-		textElement.htmltext = addSubstringAtPosition("</span>", textElement.htmltext,  mark.endIndex + textElement.updateLength);
-		textElement.updateLength += "</span>".length;
-
-	};
-	*/
+	
 	stageFactory.getMarkRectangule = function(textElement, MarkStartIndexPosition, mark){
 
 		
@@ -410,29 +402,79 @@ angular.module('easel', [])
 		textElement.hitArea = hit;
 	}
 
-	stageFactory.downloadImage = function(path){
+	stageFactory.downloadImage = function(path, dbId, x, y){
 		var image = new Image();
 	    image.src = path;
-	    image.onload = stageFactory.addImage(this.lastImagePos.x, this.lastImagePos.y);
+	    var posx;
+	    var posy;
+
+	    if(x && y){
+	    	posx = x;
+	    	posy = y;
+	    }
+	    else{
+	    	var pos = stageFactory.translateMouseCoordinates(stageFactory.stage, this.lastImagePos.x, this.lastImagePos.y);
+	    	posx = pos.x;
+	    	posy = pos.y;
+	    }
+
+	    image.onload = stageFactory.addImage(posx, posy, path);
+	    console.log("x: " + posx);
+	    console.log("y: " + posy);
+
+	    if(dbId)
+	    	return;
+
+	    persistImage(path, posx, posy, stageFactory.currentFrame.markId, function(resp){
+	    	console.log("persistiu imagem no banco");
+	    	console.log(resp);
+	    });
+	};
+
+
+	function getImages(parentId, callback){
+		ImageService.getImages({parentId: parentId})
+		.success(function(resp){
+			callback(resp);
+		});
 	}
 
-	stageFactory.addImage = function(x, y){
+	function persistImage(path, x, y, parent, callback){
+
+		var image = {
+			path: path,
+			x: x,
+			y: y,
+			parentId: parent
+		};
+
+		ImageService.addImage(image)
+		.success(function(resp){
+			callback(resp);
+		});
+
+	}
+
+	stageFactory.addImage = function(x, y, path){
 	
 
 		return function(event){
 			var image = event.target;
 			//StageFrameImage(image, stage2, parentFrame)
 			var bitmap = new StageFrameImage(image, stageFactory.stage, stageFactory.currentFrame );
-			var pos = stageFactory.translateMouseCoordinates(stageFactory.stage, x, y);
+			//var pos = stageFactory.translateMouseCoordinates(stageFactory.stage, x, y);
+			bitmap.path = path;
 
-			bitmap.x = pos.x;
-			bitmap.y = pos.y;
+
+			bitmap.x = x;
+			bitmap.y = y;
 
 			for(var i = 0; i < stageFactory.behaviors.length; i++){
 				if(stageFactory.behaviors[i] instanceof ZoomBehavior){
 					stageFactory.behaviors[i].applyTo(bitmap);
 				}
 			}
+			applyImageBehavior(bitmap);
 
 	    	var hitArea = new createjs.Shape;   
 			hitArea.graphics.beginFill("#000").drawRect(0,0,bitmap.getBounds().width,bitmap.getBounds().height);       
@@ -441,6 +483,41 @@ angular.module('easel', [])
 			stageFactory.currentFrame.addChildFrame(bitmap);
 			stageFactory.currentFrame.drawLastInserted();
 		}
+	}
+
+
+	function applyImageBehavior(img){
+
+		img.on("click", function(){
+
+			
+			//IPEGANDO POSICAO CORRETA NO CANVAS PARA POSICIONAR DIV SOBRE POSICAO DO ELEMENTO IMAGEM
+			var point = stageFactory.stage.localToGlobal(img.x, img.y);
+
+			$("#removeImageButton").css("top", point.y);
+			$("#removeImageButton").css("left", point.x);
+			$("#removeImageButton").css("display", "inline-block");
+			
+
+
+			$('#removeImageButton').on("click", function(e){
+
+				$('#removeImageButton').css("display", "none");
+
+				ImageService.removeImage({path: img.path})
+				.success(function(resp){
+					
+					var pos = stageFactory.currentFrame.frameObjects.indexOf(img);
+					if(pos !== -1){
+						stageFactory.currentFrame.frameObjects.splice(pos, 1);
+					}
+
+					stageFactory.stage.removeChild(img);
+					stageFactory.stage.update();
+				});
+			});
+		});
+
 	}
 
 
@@ -532,6 +609,14 @@ angular.module('easel', [])
 					stageFactory.stage.removeAllChildren();
 					stageFactory.stage.update();
 
+					getImages(stageFactory.currentFrame.markId, function(resp){
+						
+						resp.forEach(function(image){
+							stageFactory.downloadImage(image.path, image._id, image.x, image.y);
+						});
+						
+					});
+
 					fetchTextNodes(stageFactory.currentFrame.markId, function(data){
 						data.forEach(function(each){
 							
@@ -589,6 +674,7 @@ angular.module('easel', [])
 			var subThat = that;
 			var offset={x:that.stage.x-e.stageX,y:that.stage.y-e.stageY};
 			that.stage.addEventListener("stagemousemove",function(ev) {
+				$('#removeImageButton').css("display", "none");
 
 				subThat.stage.x = ev.stageX+offset.x;
 				subThat.stage.y = ev.stageY+offset.y;
@@ -629,7 +715,6 @@ angular.module('easel', [])
 		var editorTextBehavior = new MyEditorTextBehavior(myEditor, StageManagerService.listenerManager);
 
 		StageManagerService.behaviors.push(editorTextBehavior);
-
 
 		CanvasProps.canvas.addEventListener("contextmenu", function(e){
 			e.preventDefault();

@@ -52,7 +52,7 @@ app.use(express.static(__dirname + '/public'));
 	SETAR API DE ROTEAMENTO DE LINKS 
 
 */
-var api = require('./app/routes/api')(app, express, io, db);
+var api = require('./app/routes/api')(app, express, io, db, fs);
 
 
 
