@@ -1,1 +1,1 @@
-angular.module('MyApp', ['appRoutes', 'mapService', 'mapController', 'easel', 'freeArea', 'mindmap', 'fileUpload', 'MainControllerModule', 'directives']);
+angular.module('MyApp', ['appRoutes', 'mapService', 'userService', 'mapController', 'easel', 'freeArea', 'mindmap', 'fileUpload', 'MainControllerModule', 'directives']);

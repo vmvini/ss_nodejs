@@ -8,8 +8,7 @@ angular.module('directives', [])
             var matchTo = attrs.pwCheck;
                 //console.log(ctrl.constructor.prototype)      
             scope.$watchGroup([me, matchTo], function(value){
-              console.log(value);
-
+             
               ctrl.$setValidity('pwmatch', value[0] === value[1]);
             });
 

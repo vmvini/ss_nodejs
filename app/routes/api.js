@@ -5,6 +5,30 @@ module.exports = function(app, express, io, db, fs){
 	var api = express.Router();
 
 
+	api.post('/registerUser', function(req, res){
+		db.insertNode(
+			{
+				name: req.body.nome,
+				password: req.body.senha1,
+				email: req.body.email, 
+				image: req.body.image
+
+			}, 
+			'User', 
+			function(err, result){
+				if(err)
+					res.send(err.message);
+				else
+					res.json({success:"sucesso ao cadastrar"});
+			}
+
+		);
+	});
+
+
+
+
+
 	api.post('/addImage', function(req, res){
 
 		db.insertNode(

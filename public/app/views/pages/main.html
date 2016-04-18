@@ -40,6 +40,20 @@ html, body{
 	color:#EFF4F3;
 }
 
+.userImg{
+	background-image: url("/site_img/user.jpg");
+	background-repeat: no-repeat;
+	background-position: center center;
+	 background-size: cover;
+
+	height:100px;
+	width:100px;
+	cursor: pointer;
+	
+}
+
+input[type="file"] { display: none; }
+
 
 </style>
 
@@ -86,9 +100,47 @@ html, body{
   					<span ng-show="reg.regForm.regSenha2.$error.required && reg.hasSubmited">Redigite sua senha!</span>
   				</div>
   			</div>
+
   			
-  			<!--span ng-show="( reg.usuario.senha2.length > 0 && reg.usuario.senha1.length > 0 ) && ( reg.usuario.senha2 != reg.usuario.senha1 )">As senhas não são iguais. Digite-as novamente.</span-->
+  			<div class="form-group">
+  				<label for="regIMG" class="col-sm-2 control-label">Foto</label>
+
+  				<div class="col-sm-10">
+  					<div class="userImg">
+  					</div>
+  				</div>
+
+
+				<input 
+				  type="file"
+
+				   ngf-select=""  
+	               ng-model="reg.file" 
+	               name="file" 
+	               ngf-pattern="'image/*'"
+	               accept="image/*" 
+	               ngf-max-size="5MB" 
+	               id="uploadImageInput" />
+				
+				<script>
+					$('.userImg').on("click", function(){
+						$('#uploadImageInput').trigger('click');
+					});
+
+					$('#uploadImageInput').change(function(event){
+						var tmppath = URL.createObjectURL(event.target.files[0]);
+						$('.userImg').css('background-image', 'url("'+tmppath+'")');
+						
+					});
+
+				</script>
+
+  			</div>
+
   			<span ng-show="reg.regForm.regSenha2.$error.pwmatch">As senhas não correspondem. Digite-as novamente.</span>
+
+  			<span ng-show="reg.error">Cadastro não pode ser realizado!</span>
+  			<span ng-show="reg.complete">Cadastro realizado!</span>
 
   			<div class="form-group">
   				<div class="col-sm-offset-2 col-sm-10">
