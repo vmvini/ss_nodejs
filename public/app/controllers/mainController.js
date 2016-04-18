@@ -4,5 +4,16 @@ angular.module('MainControllerModule', [])
 
 	var vm = this;
 
+	
+
+
+	vm.hasSubmited = false;
+	
+	vm.doRegistration = function(){
+		vm.hasSubmited = true;
+		console.log("fazendo cadastro");
+	};
+
+
 
 });

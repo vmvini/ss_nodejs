@@ -38,6 +38,13 @@
   src: url('/app/google-fonts/Abel/Abel-Regular.ttf') format('truetype');
 }
 
+
+@font-face{
+	font-family: 'Merriweather';
+  src: url('/app/google-fonts/Merriweather/Merriweather-Black.ttf') format('truetype');
+}
+
+
 /** 
 font-family: 'Cantata One', serif;
 font-family: 'Trocchi', serif;
@@ -45,6 +52,7 @@ font-family: 'Abel', sans-serif;
 font-family: 'Josefin Sans', sans-serif;
 font-family: 'Quicksand', sans-serif;
 font-family: 'Josefin Slab', serif;
+font-family: 'Merriweather', serif;
 **/
 
 /** COR VERDE DO LOGO : #21A872 **/
