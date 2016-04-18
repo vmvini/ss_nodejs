@@ -134,6 +134,9 @@
             //setando atributos de identificaçao em cada span
             for(var k=0; k< spans.length; k++ ){
              $(spans[k]).attr("i", k);
+
+             console.log("setando attr em span: " + k);
+             console.log(spans[k]);
             
            }
            

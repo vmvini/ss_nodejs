@@ -259,6 +259,23 @@ module.exports = function(app, express, io, db, fs){
 		);
 	});
 
+	/*
+	relateMarks = function(data){
+		//data = ({ parentId: stageFactory.currentFrame.markId, newMarkId: resp._id } )
+	*/
+
+	api.post('/relateMarks', function(req, res){
+		db.insertRelationship( req.body.parentId, req.body.newMarkId, 'NEXT', {}, function(Rerr, Rresult){
+			if(Rerr)
+				res.send(Rerr.message);
+			else{
+				
+				res.json(Rresult);
+			}
+		} );
+	});
+
+
 
 	//atualizar textmark
 	api.post('/updateTextMark', function(req, res){
@@ -314,10 +331,12 @@ module.exports = function(app, express, io, db, fs){
 
 		/*
 		 statement: 'MATCH path = (m:Map)-[]->(t)-[*]->(tm) WHERE id(m)='+req.body.mapId+' RETURN path;',
+
+		 MATCH path = (m:Map)-[:NEXT*]->(mark:TextMark) WHERE id(m)='+req.body.mapId+' RETURN path;
 		*/
 		 var statementsOne = {
             statements: [{
-                statement: 'MATCH path = (m:Map)-[]->(t) WHERE id(m)='+req.body.mapId+' RETURN path;',
+                statement: 'MATCH path = (m:Map)-[:NEXT*]->(mark:TextMark) WHERE id(m)='+req.body.mapId+' RETURN path;',
                 resultDataContents:["graph"]
             }]
         };

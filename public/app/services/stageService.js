@@ -275,8 +275,13 @@ angular.module('easel', [])
 	function persistMark(mark, textId, callback){
 
 		TextMarksService.persist( { mark:mark, textId:textId } )
-				.success(function(data){
-					callback(data);
+				.success(function(resp){
+					
+					TextMarksService.relateMarks({ parentId: stageFactory.currentFrame.markId, newMarkId: resp._id } )
+					.success(function(){
+						callback(resp);
+					});
+					
 				});		
 	}
 
@@ -522,6 +527,9 @@ angular.module('easel', [])
 
 
 	stageFactory.addText = function(text, x, y, marks, html, notpersist){
+		console.log("marcacoes de novo texto");
+		console.log(marks);
+
 		var label1 = new StageFrame(stageFactory.stage, stageFactory.currentFrame, text, "48px Arial", "#000");	
 		label1.x = x;
 		label1.y = y;

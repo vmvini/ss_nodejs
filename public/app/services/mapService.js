@@ -67,6 +67,12 @@ angular.module('mapService', [])
 		return $http.post('/api/updateTextMark', textMarkData);
 	};
 
+	textMarkService.relateMarks = function(data){
+		//data = ({ parentId: stageFactory.currentFrame.markId, newMarkId: resp._id } )
+		return $http.post('/api/relateMarks', data);
+
+	}
+
 
 	return textMarkService;
 
