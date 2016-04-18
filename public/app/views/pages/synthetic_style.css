@@ -6,6 +6,11 @@
   
 }
 
+@font-face{
+	font-family:'Giz';
+	src: url('/app/google-fonts/giz/KGSecondChancesSketch.ttf') format('truetype');
+}
+
 @font-face {
 	font-family: 'Trocchi';
   src: url('/app/google-fonts/Trocchi/Trocchi-Regular.ttf') format('truetype');
