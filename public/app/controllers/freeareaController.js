@@ -1,6 +1,6 @@
 angular.module('freeArea', [])
 
-.controller('FreeAreaController', function(MapService, ImageService, TextMarksService,  socketio, $routeParams, StageManagerService, StageConfigurator){
+.controller('FreeAreaController', function($scope, MapService, ImageService, TextMarksService,  socketio, $routeParams, StageManagerService, StageConfigurator){
 
 //	console.log($routeParams.mapId);
 
@@ -9,6 +9,23 @@ angular.module('freeArea', [])
 	vm.mapData = { mapId: $routeParams.mapId };
 	
 	StageConfigurator.config(vm.mapData.mapId);
+
+	vm.expression = "amdlaksjqwoejlkwejqlwkejqlxamn";
+
+	$scope.$watch(function(scope){ return scope.fareac.expression; }, function() {
+       
+		//BUSCANDO MAPAS COM BASE NA STRING DIGITADA NO INPUT DE BUSCA
+		MapService.searchMap( { search: vm.expression } )
+		.success(function(resp){
+
+			vm.searchResults = resp;
+		});
+
+
+    });
+
+
+	
 
 
 	MapService.AllFirstNodes(vm.mapData)
@@ -43,6 +60,8 @@ angular.module('freeArea', [])
 
 	
 	
+
+
 
 
 

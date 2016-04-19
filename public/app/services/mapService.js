@@ -124,6 +124,10 @@ angular.module('mapService', [])
 		return $http.post('/api/getAllMap', mindMapData);
 	}
 
+	mapFactory.searchMap = function(data){
+		return $http.post('/api/searchMap', data);
+	}
+
 
 
 	return mapFactory;

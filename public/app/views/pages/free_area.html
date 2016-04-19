@@ -72,7 +72,7 @@ body{
 .menu_search{
 
 	margin-top:0px;
-	height:50px;
+	height:200px;
 	width:100%;
 	text-align:center;
 	padding:10px;
@@ -80,7 +80,7 @@ body{
 }
 
 .search_box{
-	height:100%;
+	height:50px;
 	border-radius:15px;
 	border:1px solid grey;
 	color:grey;
@@ -251,7 +251,27 @@ input[type="file"] { display: none; }
 	  			<div class="search_form" contenteditable="true">
 
 	  			</div>
+
+	  			<input id="searchInput" type="text" style="display:none;" ng-model="fareac.expression" ng-model-options="{debounce: 1000}" />
+
+	  			<script>
+	  				$('.search_form').bind("DOMSubtreeModified",function(){
+					  //console.log("digitou: " + $('.search_form').text());
+					   
+					  $('#searchInput').val( $('.search_form').text() );
+					  $('#searchInput').trigger("change");
+
+
+					});
+	  			</script>
+
   			</div>
+
+  			<ul>
+  				<li ng-repeat="map in fareac.searchResults | filter:fareac.expression">	
+  					{{map.name}}
+  				</li>
+  			</ul>
 
   	</div>
 

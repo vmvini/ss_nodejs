@@ -122,6 +122,21 @@ module.exports = function(app, express, io, db, fs){
 	});
 
 
+	api.post('/searchMap', function(req, res){
+
+		var cypher = "MATCH (map:Map) WHERE map.name =~ '(?i).*"+req.body.search+".*' OR map.description =~ '(?i).*"+req.body.search+".*' RETURN map;";
+
+		db.cypherQuery(cypher, function(err, result){
+			if(err){
+				res.send(err.message);
+			}
+			else
+				res.json(result.data);
+		});
+
+	});
+
+
 
 	api.post('/addImage', function(req, res){
 
