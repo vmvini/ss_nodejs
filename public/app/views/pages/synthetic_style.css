@@ -44,6 +44,22 @@
   src: url('/app/google-fonts/Merriweather/Merriweather-Black.ttf') format('truetype');
 }
 
+@font-face{
+	font-family: 'OpenSans-Bold';
+  src: url('/app/google-fonts/Open_Sans/OpenSans-Bold.ttf') format('truetype');
+}
+
+
+@font-face{
+	font-family: 'OpenSans-ExtraBold';
+  src: url('/app/google-fonts/Open_Sans/OpenSans-ExtraBold.ttf') format('truetype');
+}
+
+@font-face{
+	font-family: 'OpenSans-Regular';
+  src: url('/app/google-fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
+}
+
 
 /** 
 font-family: 'Cantata One', serif;
@@ -53,6 +69,11 @@ font-family: 'Josefin Sans', sans-serif;
 font-family: 'Quicksand', sans-serif;
 font-family: 'Josefin Slab', serif;
 font-family: 'Merriweather', serif;
+
+font-family: 'OpenSans-Bold', sans-serif;
+font-family: 'OpenSans-ExtraBold', sans-serif;
+font-family: 'OpenSans-Regular', sans-serif;
+
 **/
 
 /** COR VERDE DO LOGO : #21A872 **/

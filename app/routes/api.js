@@ -11,6 +11,7 @@ var jsonwebtoken = require('jsonwebtoken');
 //função para criação de token 
 //parametro: user -> usuario recuperado do banco de dados
 function createToken(user){
+	
 	var token = jsonwebtoken.sign({
 		id: user._id,
 		name: user.name,
@@ -60,11 +61,10 @@ module.exports = function(app, express, io, db, fs){
 				res.send(err.message);
 			}
 			else{
-				console.log(result.data);
 				//res.json(result.data);
 				if(result.data){
 					//usuario encontrado
-					var token = createToken(result.data);
+					var token = createToken(result.data[0]);
 					res.json({
 						success:true,
 						message:"Seja bem vindo!",

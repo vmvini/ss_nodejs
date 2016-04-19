@@ -10,7 +10,7 @@ angular.module('appRoutes', ['ngRoute'])
 			controllerAs:'mainc'
 		})
 
-		.when('/maps', {
+		.when('/me', {
 			templateUrl: 'app/views/pages/my_maps.html',
 			controller: 'MapController',
 			controllerAs:'mapc'

@@ -28,7 +28,7 @@ angular.module('MainControllerModule', [])
 	
 	if(vm.loggedIn){
 		console.log("indo para maps");
-		$location.path('/maps');
+		$location.path('/me');
 	}
 	else{
 		console.log("ninguem logado");
@@ -53,7 +53,7 @@ angular.module('MainControllerModule', [])
 
 				if(data.success){
 					console.log("sucesso no login");
-					$location.path('/maps'); //COLOCAR AQUI PAGINA DE PERFIL DO USER
+					$location.path('/me'); //COLOCAR AQUI PAGINA DE PERFIL DO USER
 				}
 				else{
 					console.log("erro no login"+data.message);
