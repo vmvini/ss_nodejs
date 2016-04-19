@@ -15,6 +15,7 @@
     "node-neo4j": "~2.0.3",
     "socket.io": "~1.4.5",
     "connect-busboy": "0.0.2",
-    "fs-extra": "~0.26.7"
+    "fs-extra": "~0.26.7",
+    "jsonwebtoken": "~5.7.0"
   }
 }

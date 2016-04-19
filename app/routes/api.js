@@ -1,10 +1,35 @@
+//requisitando arquivo config.js que possui constantes de conexao, porta, banco...
+var config = require('../../config');
+
+//recuperando secretKey do objeto config
+var secretKey = config.secretKey;
+
+//requisitando o modulo jsonwebtoken para criação de tokens de autenticação
+var jsonwebtoken = require('jsonwebtoken');
+
+
+//função para criação de token 
+//parametro: user -> usuario recuperado do banco de dados
+function createToken(user){
+	var token = jsonwebtoken.sign({
+		id: user._id,
+		name: user.name,
+		email: user.email,
+		image: 	user.image
+	}, secretKey, { expirtesInMinute: 1440 }); //o token é codificado com base na chave secreta q esta no objeto config
+
+	return token;
+}
+
+
+
 module.exports = function(app, express, io, db, fs){
 
 	//pegando o objeto router do expressjs.
 	//Router abstrai as requisições http
 	var api = express.Router();
 
-
+	//CADASTRO DE USUARIO
 	api.post('/registerUser', function(req, res){
 		db.insertNode(
 			{
@@ -25,7 +50,76 @@ module.exports = function(app, express, io, db, fs){
 		);
 	});
 
+	//LOGIN DE USUARIO
+	api.post('/login', function(req, res){
+		var cypher = "MATCH (user:User{email:'"+req.body.email+"', password:'"+req.body.password+"'}) RETURN user;";
+		
 
+		db.cypherQuery(cypher, function(err, result){
+			if(err){
+				res.send(err.message);
+			}
+			else{
+				console.log(result.data);
+				//res.json(result.data);
+				if(result.data){
+					//usuario encontrado
+					var token = createToken(result.data);
+					res.json({
+						success:true,
+						message:"Seja bem vindo!",
+						token: token
+					});
+				}
+				else{
+					//usuario nao encontrado
+					res.send({success:false, message: "Email ou senha incorretos!"});
+				}
+			}
+
+		});
+	});
+
+
+
+
+	//TUDO ANTES DESSE MIDDLEWARE NÃO PRECISA ESTAR AUTENTICADO
+	//criando middleware que cuida de verificar se a cada requisiçao, existe um token de autenticaçao
+	//pra criar o efeito de sessão
+	//esse middleware é colocado aqui propositadamente, pois o token é gerado depois de uma requisição post
+	api.use(function(req, res, next){
+
+		console.log("somebody just came to our app!");
+
+		var token = req.body.token || req.param('token') || req.headers['x-access-token'];
+
+		//verificar se token existe
+		if(token){
+			jsonwebtoken.verify(token, secretKey, function(err, decoded){
+				if(err){
+					res.status(403).send({success:false, message:"Failed to authenticate user"});
+				} else {
+					//passou na validação
+					//decoded ficara os dados decodificados do token, no caso`user id, name, username
+					req.decoded = decoded;
+					//ir para proxima rota
+					next();
+				}
+			});
+		} else{
+			//token nao existe
+			res.status(403).send({success:false, message:"No token provided"});
+		}
+
+	}); 
+
+	//TUDO DEPOIS DESSE MIDDLEWARE PRECISA ESTAR AUTENTICADO
+
+
+
+	api.get('/me', function(req, res){
+		res.json(req.decoded);
+	});
 
 
 

@@ -139,8 +139,8 @@ input[type="file"] { display: none; }
 
   			<span ng-show="reg.regForm.regSenha2.$error.pwmatch">As senhas não correspondem. Digite-as novamente.</span>
 
-  			<span ng-show="reg.error">Cadastro não pode ser realizado!</span>
-  			<span ng-show="reg.complete">Cadastro realizado!</span>
+  			<span ng-show="reg.reg_error">Cadastro não pode ser realizado!</span>
+  			<span ng-show="reg.reg_complete">Cadastro realizado!</span>
 
   			<div class="form-group">
   				<div class="col-sm-offset-2 col-sm-10">
@@ -154,23 +154,23 @@ input[type="file"] { display: none; }
 
   		<p class="titleHasAccount">Já possui conta? Entre aqui.</p>
 
-  		<form class="form-horizontal">
+  		<form ng-controller="MainController as login" name="login.loginForm" ng-submit="login.doLogin()" class="form-horizontal" novalidate>
   			<div class="form-group">
-  				<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+  				<label for="loginEmail" class="col-sm-2 control-label">Email</label>
   				<div class="col-sm-10">
-  					<input type="email" class="form-control" id="loginEmail" placeholder="Email">
+  					<input ng-required="true" name="loginEmail" ng-model="login.loginData.email" type="email" class="form-control" id="loginEmail" placeholder="Email">
   				</div>
   			</div>
   			<div class="form-group">
-  				<label for="inputPassword3" class="col-sm-2 control-label">Senha</label>
+  				<label for="loginPassword" class="col-sm-2 control-label">Senha</label>
   				<div class="col-sm-10">
-  					<input type="password" class="form-control" id="loginPassword" placeholder="senha">
+  					<input ng-required="true" name="loginPassword"  ng-model="login.loginData.password" type="password" class="form-control" id="loginPassword" placeholder="senha">
   				</div>
   			</div>
   			
   			<div class="form-group">
   				<div class="col-sm-offset-2 col-sm-10">
-  					<button type="submit" class="btn btn-default">Entrar</button>
+  					<button ng-disabled="login.loginForm.$invalid" type="submit" class="btn btn-default">Entrar</button>
   				</div>
   			</div>
   		</form>
