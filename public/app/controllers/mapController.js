@@ -12,7 +12,21 @@ angular.module('mapController', [])
 		vm.loggedUser.senha2 = "senha";
 	});
 
-	
+
+
+	vm.goToMap = function(mapId){
+		$location.path('/map/' + mapId);
+	}
+
+	vm.changed = function(mapItem){
+		console.log("atributo mudou");
+		//console.log(mapItem);	
+		MapService.updateMap(mapItem).success(function(resp){
+			console.log("resposta de atualização de permissao de mapa");
+			console.log(resp);
+		});
+	}
+
 
 	$scope.$watch(function(scope){ return scope.mapc.expression; }, function() {
        
@@ -26,18 +40,30 @@ angular.module('mapController', [])
 
     });
 
+    $scope.$watch(function(scope){return scope.mapc.maps}, function(){
+    	console.log("ocorreu mudança em maps");
+    });
+
 
 	MapService.AllMaps()
 			  .success(function(data){
 			  		vm.maps = data;
 			  });
 
+
+
 	vm.createMap = function(){
+		vm.createdMap = false;
+
+		vm.mapData.creator = vm.loggedUser.name;
+		vm.mapData.visibility = "private";
+
 		MapService.create(vm.mapData)
 			.success(function(data){
 				vm.mapData = '';
 				console.log("Mapa criado");
-				
+				vm.createdMap = true;
+
 			});
 	};
 
@@ -47,8 +73,27 @@ angular.module('mapController', [])
 
 
 	socketio.on('new_map', function(data){
-		vm.maps.push(data);
+		if(data.creator == vm.loggedUser.name )
+			vm.maps.push(data);
 	});
+
+
+	vm.showDialog = function(map){
+		bootbox.confirm("Deseja realmente remover: "+map.name+"?", function(result) {
+			if(result === true){
+				
+				MapService.removeMap({id: map._id })
+				.success(function(data){
+					console.log("mapa removido com sucesso");
+					var pos = vm.maps.indexOf(map);
+					if(pos !== -1)
+						vm.maps.splice(pos, 1);
+				});
+
+			}
+
+		}); 
+	}
 
 
 	vm.doLogout = function(){

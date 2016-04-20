@@ -129,6 +129,14 @@ angular.module('mapService', [])
 	}
 
 
+	mapFactory.updateMap = function(data){
+		return $http.post('/api/updateMap', data);
+	}
+
+	mapFactory.removeMap = function(data){
+		return $http.post('/api/removeMap', data);
+	}
+
 
 	return mapFactory;
 

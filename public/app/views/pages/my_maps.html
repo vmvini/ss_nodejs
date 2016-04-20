@@ -59,7 +59,7 @@ html, body{
 	background-color:#517CE9;
 	color:black;
 	background-image: url("/site_img/clean-gray-paper.png");
-	max-height: 400px;
+	max-height: 450px;
 	overflow: hidden;
 }
 
@@ -78,11 +78,11 @@ html, body{
 	overflow: hidden;
 	border-bottom-right-radius:3px;
 	border-bottom-left-radius: 3px;
-	overflow-y: auto
+	overflow-y: auto;
 }
 
 .search_results li{
-	cursor: pointer;	
+	
 }
 
 .result_name{
@@ -101,6 +101,24 @@ html, body{
 
 .result_desc{
 	font-family: 'OpenSans-Regular', sans-serif;
+}
+
+
+.my_maps{
+	background-color:#21A872;
+	margin:0;
+	background-image: url("/site_img/clean-gray-paper.png");
+	max-height:450px;
+	padding:40px;
+
+}
+
+.new_map{
+		background-color:#353535;
+		margin:0;
+		padding:40px;
+		color:white;
+		font-family: 'OpenSans-ExtraBold', sans-serif;
 }
 
 </style>
@@ -157,9 +175,14 @@ html, body{
   			</div>
 
   			
-  			
+  			<div id="alert-error" ng-show="reg.regForm.regSenha2.$error.pwmatch" style="margin: 5px 0 5px 0;" class="form-group">
+  				<label  class="col-sm-2 control-label"></label>	
+  				<div class="col-sm-10">
+  				<span class="alert alert-danger col-xs-12" >As senhas não correspondem. Digite-as novamente.</span>
+  				</div>
+  			</div>
 
-  			<span ng-show="reg.regForm.regSenha2.$error.pwmatch">As senhas não correspondem. Digite-as novamente.</span>
+  			
 
   			<span ng-show="reg.reg_error">Cadastro não pode ser realizado!</span>
   			<span ng-show="reg.reg_complete">Cadastro realizado!</span>
@@ -174,17 +197,99 @@ html, body{
 
   </div>
 
+
+
   <div class="row search_maps">
   	<h1 class="title_search">Encontre mapas mentais</h1>
   	<input type="text" ng-model="mapc.expression" ng-model-options="{debounce: 1000}" class="form-control" style="border-bottom-left-radius:0; border-bottom-right-radius: 0;" placeholder="Digite algum termo que identifique um mapa mental">
   	
   	<ul class="search_results">
-  	<li ng-repeat="map in mapc.searchResults | filter:mapc.expression" ><p class="result_name">{{map.name}}</p> <p class="result_creator"><span>Criado por:</span>{{map.creator}}</p>  <p class="result_desc">{{map.description}}</p> <hr></li>
+  	<li ng-repeat="map in mapc.searchResults | filter:mapc.expression" ng-click="mapc.goToMap(map._id)" ><p class="result_name">{{map.name}}</p> <p class="result_creator"><span>Criado por:</span>{{map.creator}}</p>  <p class="result_desc">{{map.description}}</p> <hr></li>
 
 
   	</ul>
 
   </div>
+
+  <div class="row new_map">
+
+  	 <div class="col-md-6 left_user_profile">
+  	 	
+  	 	<div class="userImg" style="background-image:url('/site_img/graph.png'); margin-top:10px; background-color: white;">
+  		</div>
+	</div>
+
+  	 <div class="col-md-6">
+  	 <h3>Crie aqui um mapa mental</h3>
+  	 <form ng-controller="MapController as reg" name="reg.newMapForm" ng-submit="reg.createMap()" class="form-horizontal" novalidate>
+  			
+  			<div class="form-group">
+  				<label for="inputMapName" class="col-sm-2 control-label">Nome</label>
+  					<div class="col-sm-10">
+  						<input ng-required="true" name="mapName"  ng-model="reg.mapData.name" type="text" class="form-control" id="inputMapName" placeholder="Nome do mapa mental">
+  						<span ng-show="reg.newMapForm.mapName.$error.required && reg.hasSubmited">Digite o nome do mapa mental.</span>
+  					</div>
+  			</div>
+
+  			<div class="form-group">
+  				<label for="mapDescription" class="col-sm-2 control-label">Descrição</label>
+  				<div class="col-sm-10">
+  					<textarea id="mapDescription" ng-required="true" name="mapDescription" ng-model="reg.mapData.description" class="form-control" rows="3"></textarea>
+  					<span ng-show="reg.newMapForm.mapDescription.$error.required && reg.hasSubmited">A descrição do mapa é obrigatória.</span>
+  				</div>
+  			</div>
+			
+			<span ng-show="reg.createdMap">Mapa criado com sucesso</span>
+			<!--span ng-show="reg.reg_error">Cadastro não pode ser realizado!</span>
+  			<span ng-show="reg.reg_complete">Cadastro realizado!</span-->
+
+  			<div class="form-group">
+  				<div class="col-sm-offset-2 col-sm-10">
+  					<button ng-disabled="reg.newMapForm.$invalid" type="submit" class="btn btn-default">Criar</button>
+  				</div>
+  			</div>
+  		</form>
+
+
+  	 </div>
+
+  </div>
+
+
+
+  <div class="row my_maps">
+
+
+
+  	<h1 class="title_search">Meus Mapas</h1>
+  	<input type="text" ng-model="mapc.expression2" ng-model-options="{debounce: 1000}" class="form-control" style="border-bottom-left-radius:0; border-bottom-right-radius: 0;" placeholder="Digite algum termo que identifique um mapa mental">
+  	
+  	<ul class="search_results">
+  	<li ng-repeat="map in mapc.maps | filter:mapc.expression2" >
+  		<span style="cursor:pointer;" ng-click="mapc.goToMap(map._id)"> 
+  			<p class="result_name">{{map.name}}</p> 
+  			<p class="result_desc">{{map.description}}</p> 
+  		</span>
+  			<label class="radio-inline"><input type="radio" value="public" ng-checked="map.visibility == 'public'" ng-model="map.visibility" ng-change="mapc.changed(map)" name="{{map.name}}">Público</label>
+			<label class="radio-inline"><input type="radio" value="private" ng-checked="map.visibility == 'private'" ng-model="map.visibility" ng-change="mapc.changed(map)" name="{{map.name}}">Privado</label>
+
+			<span style="margin-left:5px; cursor:pointer;" class="removeMap" ng-click="mapc.showDialog(map)">
+				<i class="fa fa-trash" aria-hidden="true"></i>
+				Remover
+			</span>
+			
+
+
+
+			 <hr>
+		</li>
+
+
+  	</ul>
+
+
+  </div>
+
 
   
 

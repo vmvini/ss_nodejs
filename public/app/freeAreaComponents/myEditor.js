@@ -124,6 +124,9 @@
     this.createEnterTextHandler = function(textToUpdate){
           
         return function(){
+            //REMOVENDO O QUE ESTA CAUSANDO BUG DE INSERÇAO DE MARCAÇAO DE TEXTO
+            $( "span" ).remove( ".fr-placeholder" );
+
             var spanObjects = [];
             //removendo spans com estilo invalido
             $('#froala-editor span:not([style])').replaceWith(function () {

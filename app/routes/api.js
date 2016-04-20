@@ -124,7 +124,7 @@ module.exports = function(app, express, io, db, fs){
 
 	api.post('/searchMap', function(req, res){
 
-		var cypher = "MATCH (map:Map) WHERE map.name =~ '(?i).*"+req.body.search+".*' OR map.description =~ '(?i).*"+req.body.search+".*' RETURN map;";
+		var cypher = "MATCH (map:Map) WHERE map.visibility = 'public' AND ( map.name =~ '(?i).*"+req.body.search+".*' OR map.description =~ '(?i).*"+req.body.search+".*' )	 RETURN map;";
 
 		db.cypherQuery(cypher, function(err, result){
 			if(err){
@@ -207,7 +207,8 @@ module.exports = function(app, express, io, db, fs){
 		{
 			name: req.body.name,
 			creator: req.body.creator,
-			description:req.body.description
+			description:req.body.description,
+			visibility: req.body.visibility
 			//tags:req.body.tags
 
 		}, 'Map', function(err, result){
@@ -215,17 +216,61 @@ module.exports = function(app, express, io, db, fs){
 					res.send(err.message);
 				else{
 
-					io.emit('new_map', result );
-					res.json(result);
+					
+					console.log("CADASTRANDO NOVO MAPA");
+					console.log("id do usuario: " + req.decoded.id ); 
+					db.insertRelationship(req.decoded.id, result._id, 'OWNS', {}, function(Rerr, Rresult){
+					if(Rerr)
+						res.send(Rerr.message);
+					else
+						io.emit('new_map', result );
+						res.json(result);
+					});
 				}
 			});
 
 	});
 
-	//pegar todos os mapas
+
+	api.post('/updateMap', function(req, res){
+
+		db.updateNode(req.body._id,  //retorna true ou false operação update
+			{
+				name: req.body.name,
+				creator: req.body.creator,
+				description:req.body.description,
+				visibility: req.body.visibility
+
+			}, function(uerr, node){
+				if(uerr){
+					res.send(uerr.message);
+				}
+				else
+					res.json(node);
+		});
+	});
+
+
+	api.post('/removeMap', function(req, res){
+		//req.body.id
+		console.log("REMOVENDO O MAPA DE ID: " + req.body.id);
+		var cypher = "MATCH (map:Map) WHERE id(map)="+req.body.id+" DETACH DELETE map";
+
+		db.cypherQuery(cypher, function(err, result){
+			if(err){
+				res.send(err.message);
+			}
+			else
+				res.json(result.data);
+		});
+
+	});
+
+
+	//pegar todos os mapas de um usuario
 	api.get('/getAllMaps', function(req, res){
 
-		db.cypherQuery("MATCH (map:Map) RETURN map", function(err, result){
+		db.cypherQuery("MATCH (user:User)-[r:OWNS]->(map:Map) WHERE id(user)="+req.decoded.id+" RETURN map", function(err, result){
 			if(err){
 				res.send(err.message);
 			}
