@@ -56,7 +56,7 @@ body{
 
 .user_photo{
 	float:left;
-	 background-image: url("/app/views/pages/vmvini.jpg");
+	 
 	  background-repeat: no-repeat;
 	  background-position: center center;
 	 width:40px;
@@ -72,7 +72,7 @@ body{
 .menu_search{
 
 	margin-top:0px;
-	height:50px;
+	min-height:30px;
 	width:100%;
 	text-align:center;
 	padding:10px;
@@ -80,7 +80,7 @@ body{
 }
 
 .search_box{
-	height:100%;
+	height:30px;
 	border-radius:15px;
 	border:1px solid grey;
 	color:grey;
@@ -109,10 +109,11 @@ body{
 
 
 .current_map{
-	height:50px;
+	//height:50px;
 	width:100%;
 	padding-top:10px;
 	padding-left:10px;
+	padding-bottom: 10px;	
 	background-color:#F23A3A;
 
 
@@ -180,6 +181,15 @@ body{
 
 }
 
+
+
+a {
+  color: inherit; /* blue colors for links too */
+  text-decoration: inherit; /* no underline */
+}
+a:hover { color:inherit; }
+
+
 </style>
 
 
@@ -192,14 +202,16 @@ body{
 <div class="menu">
 
   	<div class="menu_header">
-  		<div class="menu_logo">
-  		<span class="logo">SS</span>
-  		</div>
-  		<div class="menu_user">
-  			<p class="user_name">Marcus Vinícius</p>
-  			<div class="user_photo">
-  			</div>
-  		</div>
+	  	<a style="" href="/me">
+	  		<div class="menu_logo">
+	  		<span class="logo">SS</span>
+	  		</div>
+	  		<div class="menu_user">
+	  			<p class="user_name">{{mindMapCtrl.loggedUser.name}}</p>
+	  			<div class="user_photo" style="background-image: url('{{mindMapCtrl.loggedUser.image}}');">
+	  			</div>
+	  		</div>
+	  	</a>
   	</div>
 
 
@@ -212,13 +224,35 @@ body{
 	  			<div class="search_form" contenteditable="true">
 
 	  			</div>
+
+	  			<input id="searchInput" type="text" style="display:none;" ng-model="mindMapCtrl.expression" ng-model-options="{debounce: 1000}" />
+
+	  			<script>
+	  				$('.search_form').bind("DOMSubtreeModified",function(){
+					  //console.log("digitou: " + $('.search_form').text());
+					   
+					  $('#searchInput').val( $('.search_form').text() );
+					  $('#searchInput').trigger("change");
+
+
+					});
+	  			</script>
+
   			</div>
+
+  			<ul style="list-style: none; padding:0; max-height: 300px; width:100%; overflow:hidden;
+	overflow-y: auto">
+  				<li class="option" ng-click="mindMapCtrl.goToMap(map._id)"  style="text-align:left; cursor:pointer;"  ng-repeat="map in mindMapCtrl.searchResults | filter:mindMapCtrl.expression">	
+  					<span class="option_name"><p>{{map.name}}</p></span>
+  				</li>
+  			</ul>
 
   	</div>
 
 
   	<div class="current_map">
-  		<i class="fa fa-angle-double-right"></i> <span class="map_name">Sistemas Distribuidos</span>
+  		<i class="fa fa-angle-double-right"></i> <span class="map_name">{{mindMapCtrl.mapObject.name}}</span>
+  		<p style="font-family: 'OpenSans-Regular', sans-serif; text-shadow: 1px 1px #000000;" ng-show="mindMapCtrl.mapObject.creator != mindMapCtrl.loggedUser.name">Autor: {{mindMapCtrl.mapObject.creator}}</p>
   	</div>
 
   
@@ -244,55 +278,15 @@ body{
  
   		<ul class="options green_option_border giant_list ">
   		
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>Planejamento TCC</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>Programação com Objetos Distribuidos</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>AngularJS</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>Javascript</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>NodeJS</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>EaselJS</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>Neo4J</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>D3JS</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>Froala</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>ExpressJS</p></span></a>
-  			</li>
-
-  			<li class="option">
-  				<a class="links" href="#"><span class="option_name"><p>Bootstrap</p></span></a>
+  			<li ng-repeat="map in mindMapCtrl.maps" class="option">
+  				<a class="links" href="/map/{{map._id}}"><span class="option_name"><p>{{map.name}}</p></span></a>
   			</li>
 
   		</ul>
   		
 
   		<div class="sair">
-  			<a href="#" class="links"><span class="option_name">Sair</span></a>
+  			<span ng-click="mindMapCtrl.doLogout()" style="cursor: pointer;"class="option_name">Sair</span>
   		</div>
 
   	</div> <!-- menu -->

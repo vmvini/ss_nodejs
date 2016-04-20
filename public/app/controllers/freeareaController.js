@@ -1,6 +1,6 @@
 angular.module('freeArea', [])
 
-.controller('FreeAreaController', function($scope, MapService, ImageService, TextMarksService,  socketio, $routeParams, StageManagerService, StageConfigurator){
+.controller('FreeAreaController', function($scope, Auth, $location, MapService, ImageService, TextMarksService,  socketio, $routeParams, StageManagerService, StageConfigurator){
 
 //	console.log($routeParams.mapId);
 
@@ -9,6 +9,25 @@ angular.module('freeArea', [])
 	vm.mapData = { mapId: $routeParams.mapId };
 	
 	StageConfigurator.config(vm.mapData.mapId);
+
+
+	Auth.getUser().then(function(resp){
+		console.log(resp);
+		vm.loggedUser = resp.data;
+		
+	});
+
+	MapService.getById({mapId: vm.mapData.mapId})
+	.success(function(resp){
+		vm.mapObject = resp;
+
+	});
+
+	MapService.AllMaps()
+			  .success(function(data){
+			  		vm.maps = data;
+			  });
+
 
 	vm.expression = "amdlaksjqwoejlkwejqlwkejqlxamn";
 
@@ -25,7 +44,11 @@ angular.module('freeArea', [])
     });
 
 
-	
+
+
+	vm.goToMap = function(mapId){
+		$location.path('/map/' + mapId);
+	}
 
 
 	MapService.AllFirstNodes(vm.mapData)
@@ -61,6 +84,10 @@ angular.module('freeArea', [])
 	
 	
 
+		vm.doLogout = function(){
+			Auth.logout();
+			$location.path('/');
+		}
 
 
 

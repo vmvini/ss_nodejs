@@ -137,6 +137,9 @@ angular.module('mapService', [])
 		return $http.post('/api/removeMap', data);
 	}
 
+	mapFactory.getById = function(data){
+		return $http.post('/api/getMapById', data);
+	}
 
 	return mapFactory;
 

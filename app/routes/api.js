@@ -266,6 +266,20 @@ module.exports = function(app, express, io, db, fs){
 
 	});
 
+	api.post('/getMapById', function(req, res){
+
+		var cypher = "MATCH (map:Map) WHERE id(map)="+req.body.mapId+" RETURN map";
+		db.cypherQuery(cypher, function(err, result){
+			if(err){
+				res.send(err.message);
+			}
+			else
+				res.json(result.data[0]);
+		});
+
+	});
+
+
 
 	//pegar todos os mapas de um usuario
 	api.get('/getAllMaps', function(req, res){
