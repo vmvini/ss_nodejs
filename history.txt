@@ -1,0 +1,30 @@
+Date: Fri Apr 22 2016 11:30:43 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
+Date: Fri Apr 22 2016 11:30:43 GMT-0300 (BRT) | Msfg: |mapId = 1642|
+Date: Fri Apr 22 2016 11:30:43 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
+Date: Fri Apr 22 2016 11:32:43 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
+Date: Fri Apr 22 2016 11:32:43 GMT-0300 (BRT) | Msfg: |mapId = 1642|
+Date: Fri Apr 22 2016 11:32:43 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
+Date: Fri Apr 22 2016 11:34:43 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
+Date: Fri Apr 22 2016 11:34:43 GMT-0300 (BRT) | Msfg: |mapId = 1642|
+Date: Fri Apr 22 2016 11:34:43 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
+Date: Fri Apr 22 2016 11:39:49 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
+Date: Fri Apr 22 2016 11:39:49 GMT-0300 (BRT) | Msfg: |mapId = 1642|
+Date: Fri Apr 22 2016 11:39:49 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
+Date: Fri Apr 22 2016 11:40:00 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1658|
+Date: Fri Apr 22 2016 11:40:00 GMT-0300 (BRT) | Msfg: |get text nodes request thrown to server.|
+Date: Fri Apr 22 2016 11:41:49 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
+Date: Fri Apr 22 2016 11:41:49 GMT-0300 (BRT) | Msfg: |mapId = 1642|
+Date: Fri Apr 22 2016 11:41:49 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
+Date: Fri Apr 22 2016 11:42:00 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1658|
+Date: Fri Apr 22 2016 11:42:00 GMT-0300 (BRT) | Msfg: |get text nodes request thrown to server.|
+Date: Fri Apr 22 2016 11:43:49 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
+Date: Fri Apr 22 2016 11:50:29 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1647|
+Date: Fri Apr 22 2016 11:50:29 GMT-0300 (BRT) | Msfg: |get text nodes request thrown to server.|
+Date: Fri Apr 22 2016 11:52:29 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1647|
+Date: Fri Apr 22 2016 11:54:29 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1647|
+Date: Fri Apr 22 2016 11:56:06 GMT-0300 (BRT) | Msfg: |CanvasProps::RESETING CANVAS|
+Date: Fri Apr 22 2016 11:56:06 GMT-0300 (BRT) | Msfg: |mapId = 1642|
+Date: Fri Apr 22 2016 11:56:06 GMT-0300 (BRT) | Msfg: |StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = 1642|
+Date: Fri Apr 22 2016 11:56:07 GMT-0300 (BRT) | Msfg: |getMarkStartIndexPosition::GETTING CANVAS MARK START INDEX POSITION|
+Date: Fri Apr 22 2016 11:56:07 GMT-0300 (BRT) | Msfg: |getMarkRectangule::CREATING TEXTMARK RECTANGULES SET |
+Date: Fri Apr 22 2016 11:56:07 GMT-0300 (BRT) | Msfg: |text content: |NPM - Node Package Manager||

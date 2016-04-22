@@ -2,6 +2,8 @@ angular.module('MainControllerModule', [])
 
 .controller('MainController', function(UserService, UploadService, Auth, $rootScope, $location){
 
+
+
 	var vm = this;
 
 	vm.reg_complete = false;

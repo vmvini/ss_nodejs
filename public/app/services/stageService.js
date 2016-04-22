@@ -1,7 +1,7 @@
 angular.module('easel', [])
 
 
-.factory('CanvasProps', function(){
+.factory('CanvasProps', function(LogService){
 
 	var canvasProps = {};
 
@@ -15,6 +15,7 @@ angular.module('easel', [])
 	canvasProps.canvas.height = canvasProps.height;
 
 	canvasProps.reset = function(){
+		LogService.save("CanvasProps::RESETING CANVAS");
 		canvasProps.id = "myCanvas";
 		canvasProps.width = window.innerWidth;
 		canvasProps.height = window.innerHeight;
@@ -30,7 +31,7 @@ angular.module('easel', [])
 })
 
 
-.factory('StageManagerService', function(CanvasProps, MapService, ImageService, TextMarksService){
+.factory('StageManagerService', function(CanvasProps, MapService, ImageService, TextMarksService, LogService){
 
 	var stageFactory = {};
 
@@ -66,6 +67,9 @@ angular.module('easel', [])
 		stageFactory.originFrame.id = mapkey;
 		stageFactory.originFrame.markId = mapkey;
 
+		LogService.save("mapId = " + mapId);
+		LogService.save("StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = " + stageFactory.originFrame.id  );
+
 		
 	}
 
@@ -79,21 +83,35 @@ angular.module('easel', [])
 			html:html
 		};
 
+		LogService.save("persistText::STARTING SAVE TEXT: _>_> ");
+		LogService.save("content: " + text);
+		LogService.save("posx: " + x);
+		LogService.save("posy: " + y);
+		LogService.save("parent: " + parent);
+		LogService.save("html: "  + html);
+
 		MapService.insertTextNode(textNodeData)
 		.success(function(data){
 			callback(data);
 		});
+
+
+		LogService.save("save text request thrown to server");
 	
 	}
 
 	//recupera textos do banco de dados
 	function fetchTextNodes(parentId, callback){
 		
+		LogService.save("fetchTextNodes::getting textnodes of node id: " + parentId);
+
 		MapService.allTextNodesOf( { parentId:parentId } )
 		.success(function(data){
 			callback(data);
 
 		});
+
+		LogService.save("get text nodes request thrown to server.");
 
 	}
 
@@ -106,6 +124,11 @@ angular.module('easel', [])
 	stageFactory.getMarkRectangule = function(textElement, MarkStartIndexPosition, mark){
 
 		
+		LogService.save("getMarkRectangule::CREATING TEXTMARK RECTANGULES SET ");
+		LogService.save("text content: |" + textElement.text + "|");
+		LogService.save("mark content: _>_>");
+		LogService.save("mark.startIndex: " + mark.startIndex);
+		LogService.save("mark.endIndex: " + mark.endIndex);
 
 		var i = mark.startIndex;
 
@@ -159,12 +182,19 @@ angular.module('easel', [])
 			width:width
 		});
 
+
+
+		LogService.save( rects.length + " rects created!");
+
 		return rects;
 
 
 	};
 
 	stageFactory.getMarkStartIndexPosition = function(textElement, startIndex){
+		
+		LogService.save("getMarkStartIndexPosition::GETTING CANVAS MARK START INDEX POSITION");
+
 		var metrics = textElement.getMetrics();
 		var lines = metrics.lines;
 		insertSpaceEveryLine(lines);

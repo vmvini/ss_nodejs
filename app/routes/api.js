@@ -7,6 +7,8 @@ var secretKey = config.secretKey;
 //requisitando o modulo jsonwebtoken para criação de tokens de autenticação
 var jsonwebtoken = require('jsonwebtoken');
 
+//requisitando fs
+var fs = require('fs');
 
 //função para criação de token 
 //parametro: user -> usuario recuperado do banco de dados
@@ -29,6 +31,45 @@ module.exports = function(app, express, io, db, fs){
 	//pegando o objeto router do expressjs.
 	//Router abstrai as requisições http
 	var api = express.Router();
+
+
+	function createLog(message, date){
+		
+		var msg =  date + " | Msg: |" + message + "|\n";
+
+	 	return msg;
+	}
+
+	//SALVAR LOG EM ARQUIVO TEXTO
+	api.post('/saveLog', function(req, res){
+		/*
+		message = { date: 'null por enquanto', message: message  }
+	*/
+
+		fs.open('./history.txt', 'a', function(err, fd) {
+			if (err) { throw err; }
+
+			var writeBuffer = new Buffer( createLog(req.body.message, req.body.date)  ),
+			
+			bufferPosition = 0,
+			bufferLength = writeBuffer.length, filePosition = null;
+
+			fs.write( fd, writeBuffer, bufferPosition, bufferLength, filePosition, 
+				function(err, written) {
+					if (err) { throw err; }
+					console.log('escreveu ' + written + ' bytes');
+
+					fs.close(fd, function(){
+						console.log("fechou arquivo");
+					});
+
+			}); //fim write
+
+		}); //fim open
+
+	});
+
+
 
 	//CADASTRO DE USUARIO
 	api.post('/registerUser', function(req, res){
