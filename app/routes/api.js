@@ -10,6 +10,9 @@ var jsonwebtoken = require('jsonwebtoken');
 //requisitando fs
 var fs = require('fs');
 
+FILE_BUSY = false;
+
+
 //função para criação de token 
 //parametro: user -> usuario recuperado do banco de dados
 function createToken(user){
@@ -40,32 +43,97 @@ module.exports = function(app, express, io, db, fs){
 	 	return msg;
 	}
 
+
+	function SaveLogRequestPool(){
+		
+		this.requests = [];
+
+		this.executeFirst = function(){
+
+			var first;
+
+			if(this.requests.length > 0){
+				first = this.requests[0];
+				first.execute();
+				this.requests.splice(0, 1);
+			}
+
+			
+
+		}
+
+		this.addRequest = function(req){
+			this.requests.push(req);
+		}
+	}
+
+	saveLogRequestPool = new SaveLogRequestPool();
+
+
+	function createSaveLogReq(log){
+
+		
+
+		this.execute = function(){
+			
+			fs.open('./history.txt', 'a', function(err, fd) {
+				if (err) { throw err; }
+
+				FILE_BUSY = true;
+
+				var writeBuffer = new Buffer( log ),
+
+				bufferPosition = 0,
+				bufferLength = writeBuffer.length, filePosition = null;
+
+				fs.write( fd, writeBuffer, bufferPosition, bufferLength, filePosition, 
+					function(err, written) {
+						if (err) { throw err; }
+						console.log('escreveu ' + written + ' bytes');
+
+						fs.close(fd, function(){
+							FILE_BUSY = false;
+							console.log("fechou arquivo");
+							saveLogRequestPool.executeFirst();
+							console.log("executou comando de escrita");
+
+						});
+
+				}); //fim write
+
+			}); //fim open
+		
+
+		};
+
+	}
+
+
 	//SALVAR LOG EM ARQUIVO TEXTO
 	api.post('/saveLog', function(req, res){
 		/*
 		message = { date: 'null por enquanto', message: message  }
 	*/
+		var message = req.body.message;
+		var date = req.body.date;
 
-		fs.open('./history.txt', 'a', function(err, fd) {
-			if (err) { throw err; }
+		var log = createLog(message, date);
 
-			var writeBuffer = new Buffer( createLog(req.body.message, req.body.date)  ),
+		var request = new createSaveLogReq(log);
+
+		if(FILE_BUSY){
+			saveLogRequestPool.addRequest(request);
 			
-			bufferPosition = 0,
-			bufferLength = writeBuffer.length, filePosition = null;
+		}	
+		else{
+			request.execute();
+		}
 
-			fs.write( fd, writeBuffer, bufferPosition, bufferLength, filePosition, 
-				function(err, written) {
-					if (err) { throw err; }
-					console.log('escreveu ' + written + ' bytes');
+		res.json({status:"save log command triggered"});
 
-					fs.close(fd, function(){
-						console.log("fechou arquivo");
-					});
-
-			}); //fim write
-
-		}); //fim open
+/*
+		
+		*/
 
 	});
 

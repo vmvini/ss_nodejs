@@ -1,30 +1,33 @@
-Date: Fri Apr 22 2016 11:30:43 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
-Date: Fri Apr 22 2016 11:30:43 GMT-0300 (BRT) | Msfg: |mapId = 1642|
-Date: Fri Apr 22 2016 11:30:43 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
-Date: Fri Apr 22 2016 11:32:43 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
-Date: Fri Apr 22 2016 11:32:43 GMT-0300 (BRT) | Msfg: |mapId = 1642|
-Date: Fri Apr 22 2016 11:32:43 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
-Date: Fri Apr 22 2016 11:34:43 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
-Date: Fri Apr 22 2016 11:34:43 GMT-0300 (BRT) | Msfg: |mapId = 1642|
-Date: Fri Apr 22 2016 11:34:43 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
-Date: Fri Apr 22 2016 11:39:49 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
-Date: Fri Apr 22 2016 11:39:49 GMT-0300 (BRT) | Msfg: |mapId = 1642|
-Date: Fri Apr 22 2016 11:39:49 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
-Date: Fri Apr 22 2016 11:40:00 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1658|
-Date: Fri Apr 22 2016 11:40:00 GMT-0300 (BRT) | Msfg: |get text nodes request thrown to server.|
-Date: Fri Apr 22 2016 11:41:49 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
-Date: Fri Apr 22 2016 11:41:49 GMT-0300 (BRT) | Msfg: |mapId = 1642|
-Date: Fri Apr 22 2016 11:41:49 GMT-0300 (BRT) | Msfg: |Iniciando frame raiz. stageFactory.originFrame.id = 1642|
-Date: Fri Apr 22 2016 11:42:00 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1658|
-Date: Fri Apr 22 2016 11:42:00 GMT-0300 (BRT) | Msfg: |get text nodes request thrown to server.|
-Date: Fri Apr 22 2016 11:43:49 GMT-0300 (BRT) | Msfg: |Resetando Canvas|
-Date: Fri Apr 22 2016 11:50:29 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1647|
-Date: Fri Apr 22 2016 11:50:29 GMT-0300 (BRT) | Msfg: |get text nodes request thrown to server.|
-Date: Fri Apr 22 2016 11:52:29 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1647|
-Date: Fri Apr 22 2016 11:54:29 GMT-0300 (BRT) | Msfg: |getting textnodes of textMark: 1647|
-Date: Fri Apr 22 2016 11:56:06 GMT-0300 (BRT) | Msfg: |CanvasProps::RESETING CANVAS|
-Date: Fri Apr 22 2016 11:56:06 GMT-0300 (BRT) | Msfg: |mapId = 1642|
-Date: Fri Apr 22 2016 11:56:06 GMT-0300 (BRT) | Msfg: |StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = 1642|
-Date: Fri Apr 22 2016 11:56:07 GMT-0300 (BRT) | Msfg: |getMarkStartIndexPosition::GETTING CANVAS MARK START INDEX POSITION|
-Date: Fri Apr 22 2016 11:56:07 GMT-0300 (BRT) | Msfg: |getMarkRectangule::CREATING TEXTMARK RECTANGULES SET |
-Date: Fri Apr 22 2016 11:56:07 GMT-0300 (BRT) | Msfg: |text content: |NPM - Node Package Manager||
+2016-04-22T17:07:43.262Z | Msg: |StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = 1642|
+2016-04-22T17:07:43.262Z | Msg: |StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = 1642|
+2016-04-22T17:07:43.262Z | Msg: |StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = 1642|
+2016-04-22T17:07:43.676Z | Msg: |getMarkStartIndexPosition::GETTING CANVAS MARK START INDEX POSITION|
+2016-04-22T17:07:43.678Z | Msg: |getMarkRectangule::CREATING TEXTMARK RECTANGULES SET |
+2016-04-22T17:07:43.678Z | Msg: |text content: |COMANDOS||
+2016-04-22T17:10:14.391Z | Msg: |mapId = 1642|
+2016-04-22T17:10:14.391Z | Msg: |mapId = 1642|
+2016-04-22T17:10:14.391Z | Msg: |StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = 1642|
+2016-04-22T17:10:14.693Z | Msg: |getMarkRectangule::CREATING TEXTMARK RECTANGULES SET |
+2016-04-22T17:10:14.693Z | Msg: |getMarkRectangule::CREATING TEXTMARK RECTANGULES SET |
+2016-04-22T17:10:14.693Z | Msg: |text content: |NPM - Node Package Manager||
+2016-04-22T17:16:49.681Z | Msg: |CanvasProps::RESETING CANVAS|
+2016-04-22T17:16:49.682Z | Msg: |mapId = 1642|
+2016-04-22T17:16:49.682Z | Msg: |StageManagerService::STARTING ORIGIN FRAME. stageFactory.originFrame.id = 1642|
+2016-04-22T17:16:50.049Z | Msg: |getMarkStartIndexPosition::GETTING CANVAS MARK START INDEX POSITION|
+2016-04-22T17:16:50.051Z | Msg: |getMarkRectangule::CREATING TEXTMARK RECTANGULES SET |
+2016-04-22T17:16:50.051Z | Msg: |text content: |COMANDOS||
+2016-04-22T17:16:50.051Z | Msg: |mark content: _>_>|
+2016-04-22T17:16:50.051Z | Msg: |mark.startIndex: 0|
+2016-04-22T17:16:50.051Z | Msg: |mark.endIndex: 8|
+2016-04-22T17:16:50.053Z | Msg: |1 rects created!|
+2016-04-22T17:16:50.090Z | Msg: |getMarkStartIndexPosition::GETTING CANVAS MARK START INDEX POSITION|
+2016-04-22T17:16:50.091Z | Msg: |getMarkRectangule::CREATING TEXTMARK RECTANGULES SET |
+2016-04-22T17:16:50.091Z | Msg: |text content: |NPM - Node Package Manager||
+2016-04-22T17:16:50.091Z | Msg: |mark content: _>_>|
+2016-04-22T17:16:50.091Z | Msg: |mark.startIndex: 0|
+2016-04-22T17:16:50.091Z | Msg: |mark.endIndex: 26|
+2016-04-22T17:16:50.094Z | Msg: |1 rects created!|
+2016-04-22T17:18:04.321Z | Msg: |fetchTextNodes::getting textnodes of node id: 1647|
+2016-04-22T17:18:04.322Z | Msg: |get text nodes request thrown to server.|
+2016-04-22T17:18:31.595Z | Msg: |fetchTextNodes::getting textnodes of node id: 1658|
+2016-04-22T17:18:31.595Z | Msg: |get text nodes request thrown to server.|
