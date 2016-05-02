@@ -1,3 +1,6 @@
 node_modules/
+database_backup/
 errors-log.txt
+history.txt
 public/img/
+
