@@ -5,7 +5,9 @@ html, body{
 
 .container .jumbotron {
     border-radius: 0px;
+
 }
+
 
 .header{
 	//background-image: url("/site_img/chalkboard-backgrounds/chalkboard-backgrounds/chalkboard-green.jpg");
@@ -18,13 +20,13 @@ html, body{
 	border-bottom-left-radius: 0;
 	background-image: url("/site_img/clean-gray-paper.png");
 	margin:0;
-
 }
 
 .account_session{
 		background-color:#353535;
 		margin:0;
-		padding:40px;
+		/*padding:40px;*/
+    padding: 60px 40px 40px 40px;
 		color:white;
 }	
 
@@ -32,12 +34,23 @@ html, body{
 	font-family: 'Merriweather', serif;
 	font-size:22px;
 	color:#EFF4F3;
+  margin-bottom: 40px;
 }
 
 .titleHasAccount{
 	font-family: 'Merriweather', serif;
 	font-size:22px;
 	color:#EFF4F3;
+  margin-bottom: 40px;
+}
+
+span{
+  color: #3CB371;
+}
+
+input{
+  border-bottom-right-radius: 5px !important;
+  border-top-right-radius: 5px !important;
 }
 
 .userImg{
@@ -80,46 +93,64 @@ input[type="file"] { display: none; }
   <div class="row account_session">
   	<div class="col-md-6">
   	<!-- FORMULÁRIO DE CADASTRO DE USUARIO -->
-  		<p class="titleNoAccount">Não possui conta? Crie aqui.</p>		
+  		<p class="titleNoAccount">Não possui conta? <span>Crie aqui.</span></p>		
   		<form ng-controller="MainController as reg" name="reg.regForm" ng-submit="reg.doRegistration()" class="form-horizontal" novalidate>
   			
   			<div class="form-group">
-  				<label for="inputName" class="col-sm-2 control-label">Nome</label>
   					<div class="col-sm-10">
-  						<input ng-required="true" name="regNome" ng-model="reg.usuario.nome" type="text" class="form-control" id="inputName" placeholder="Nome">
-  						<span ng-show="reg.regForm.regNome.$error.required && reg.hasSubmited">Digite seu nome!</span>
+            
+            <div class="input-group">
+                <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></div>
+                <input ng-required="true" name="regNome" ng-model="reg.usuario.nome" type="text" class="form-control" id="inputName" placeholder="Nome">
+              <span ng-show="reg.regForm.regNome.$error.required && reg.hasSubmited">Digite seu nome!</span>
+            </div>
+  						
   					</div>
   			</div>
 
-  			<div class="form-group">
-  				<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+  			<div class="form-group"> 				
   				<div class="col-sm-10">
+          <!-- <label for="inputEmail3" class="control-label">Email</label>
   					<input ng-required="true" name="regEmail" ng-model="reg.usuario.email" type="email" class="form-control" id="inputEmail3" placeholder="Email">
   					<span ng-show="reg.regForm.regEmail.$error.required && reg.hasSubmited">Digite seu email!</span>
+  				</div> -->
+          <div class="input-group">
+              <div class="input-group-addon">@</div>
+              <input ng-required="true" name="regEmail" ng-model="reg.usuario.email" type="email" class="form-control" id="inputEmail3" placeholder="Email">
+            <span ng-show="reg.regForm.regEmail.$error.required && reg.hasSubmited">Digite seu email!</span>
+          </div>
+  			</div>
+        </div>
+
+  			<div class="form-group">
+  				<div class="col-sm-10">
+          <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
+              <input ng-required="true" type="password" name="regSenha1" ng-model="reg.usuario.senha1"  class="form-control" id="regSenha1" placeholder="Senha" >
+            <span ng-show="reg.regForm.regSenha1.$error.required && reg.hasSubmited">Digite sua senha!</span>
+          </div>
+          <!-- <label for="regSenha1" class="control-label">Senha</label> -->				
   				</div>
   			</div>
 
   			<div class="form-group">
-  				<label for="regSenha1" class="col-sm-2 control-label">Senha</label>
+  				
   				<div class="col-sm-10">
-  					<input ng-required="true" type="password" name="regSenha1" ng-model="reg.usuario.senha1"  class="form-control" id="regSenha1" placeholder="Senha" >
-  					<span ng-show="reg.regForm.regSenha1.$error.required && reg.hasSubmited">Digite sua senha!</span>
-  				</div>
-  			</div>
-
-  			<div class="form-group">
-  				<label for="regSenha2" class="col-sm-2 control-label">Senha</label>
-  				<div class="col-sm-10">
-  					<input ng-disabled="reg.regForm.regSenha1.$error.required"  ng-required="true" name="regSenha2" ng-model="reg.usuario.senha2" type="password" class="form-control" id="regSenha2" placeholder="Digite novamente a senha" pw-check="reg.usuario.senha1" >
-  					<span ng-show="reg.regForm.regSenha2.$error.required && reg.hasSubmited">Redigite sua senha!</span>
+          <div class="input-group">
+              <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
+              <input ng-disabled="reg.regForm.regSenha1.$error.required"  ng-required="true" name="regSenha2" ng-model="reg.usuario.senha2" type="password" class="form-control" id="regSenha2" placeholder="Digite novamente a senha" pw-check="reg.usuario.senha1" >
+            <span ng-show="reg.regForm.regSenha2.$error.required && reg.hasSubmited">Redigite sua senha!</span>
+          </div>
+          <!-- <label for="regSenha2" class="control-label">Senha</label> -->
   				</div>
   			</div>
 
   			
   			<div class="form-group">
-  				<label for="regIMG" class="col-sm-2 control-label">Foto</label>
+  				
 
   				<div class="col-sm-10">
+          <label for="regIMG" class="control-label"><i class="fa fa-picture-o" aria-hidden="true"></i> Foto</label>
   					<div class="userImg" id="userImgTarget">
               <img src="../../../site_img/user.jpg">
   					</div>
@@ -159,8 +190,9 @@ input[type="file"] { display: none; }
   			<span ng-show="reg.reg_complete">Cadastro realizado!</span>
 
   			<div class="form-group">
-  				<div class="col-sm-offset-2 col-sm-10">
-  					<button ng-disabled="reg.regForm.$invalid" type="submit" class="btn btn-default">Cadastrar</button>
+  				<div class="col-sm-10">
+  					<button ng-disabled="reg.regForm.$invalid" type="submit" class="btn btn-default">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> Cadastrar</button>
   				</div>
   			</div>
   		</form>
@@ -168,25 +200,35 @@ input[type="file"] { display: none; }
 
   	<div class="col-md-6">
 
-  		<p class="titleHasAccount">Já possui conta? Entre aqui.</p>
+  		<p class="titleHasAccount">Já possui conta? <span>Entre aqui.</span></p>
 
   		<form ng-controller="MainController as login" name="login.loginForm" ng-submit="login.doLogin()" class="form-horizontal" novalidate>
   			<div class="form-group">
-  				<label for="loginEmail" class="col-sm-2 control-label">Email</label>
-  				<div class="col-sm-10">
-  					<input ng-required="true" name="loginEmail" ng-model="login.loginData.email" type="email" class="form-control" id="loginEmail" placeholder="Email">
+        <div class="col-sm-10">
+        <div class="input-group">
+          
+            <div class="input-group-addon">@</div>
+            <input ng-required="true" name="loginEmail" ng-model="login.loginData.email" type="email" class="form-control" id="loginEmail" placeholder="Email">
+          
+        </div>
+  				<!-- <label for="loginEmail" class="col-sm-2 control-label">Email</label> -->
   				</div>
   			</div>
   			<div class="form-group">
-  				<label for="loginPassword" class="col-sm-2 control-label">Senha</label>
+  				<!-- <label for="loginPassword" class="col-sm-2 control-label">Senha</label> -->
   				<div class="col-sm-10">
-  					<input ng-required="true" name="loginPassword"  ng-model="login.loginData.password" type="password" class="form-control" id="loginPassword" placeholder="senha">
+          <div class="input-group">
+            <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
+            <input ng-required="true" name="loginPassword"  ng-model="login.loginData.password" type="password" class="form-control" id="loginPassword" placeholder="senha">
+          </div>
+  					
   				</div>
   			</div>
   			
   			<div class="form-group">
-  				<div class="col-sm-offset-2 col-sm-10">
-  					<button ng-disabled="login.loginForm.$invalid" type="submit" class="btn btn-default">Entrar</button>
+  				<div class="col-sm-10">
+  					<button ng-disabled="login.loginForm.$invalid" type="submit" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true"></i>
+ Entrar</button>
   				</div>
   			</div>
   		</form>
