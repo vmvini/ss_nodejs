@@ -41,10 +41,11 @@ html, body{
 }
 
 .userImg{
-	background-image: url("/site_img/user.jpg");
+	/*background-image: url("/site_img/user.jpg");*/
+  overflow: hidden;
 	background-repeat: no-repeat;
 	background-position: center center;
-	 background-size: cover;
+	background-size: cover;
 
 	height:100px;
 	width:100px;
@@ -52,7 +53,17 @@ html, body{
   /*new-update*/
   border-radius: 5px;
   box-shadow: 3px 3px 5px -1px rgba(0,0,0,0.75);
-	
+}
+
+.userImg img{
+  width: 100%;
+  height: 100%;
+  transition: 0.3s;
+}
+
+.userImg img:hover{
+  transition: 0.3s;
+  transform: scale(1.2);
 }
 
 input[type="file"] { display: none; }
@@ -109,7 +120,8 @@ input[type="file"] { display: none; }
   				<label for="regIMG" class="col-sm-2 control-label">Foto</label>
 
   				<div class="col-sm-10">
-  					<div class="userImg">
+  					<div class="userImg" id="userImgTarget">
+              <img src="../../../site_img/user.jpg">
   					</div>
   				</div>
 
@@ -132,8 +144,9 @@ input[type="file"] { display: none; }
 
 					$('#uploadImageInput').change(function(event){
 						var tmppath = URL.createObjectURL(event.target.files[0]);
-						$('.userImg').css('background-image', 'url("'+tmppath+'")');
-						
+						// $('.userImg').css('background-image', 'url("'+tmppath+'")');
+            /*new-update*/
+            $('.userImg').children('img').attr('src',tmppath);	
 					});
 
 				</script>
