@@ -30,17 +30,30 @@ html, body{
 }	
 
 .userImg{
-	background-image: url("/site_img/user.jpg");
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: cover;
 	border-radius:50%;
 	height:200px;
 	width:200px;
 	cursor: pointer;
-
+  box-shadow: -1px 2px 5px 1px rgba(0,0,0,0.33);
 	margin:0 auto;
-	
+  overflow: hidden;
+}
+
+.image{
+  background-image: url('/site_img/user.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  transition: 0.3s;
+}
+
+.image:hover{
+  transition: 0.2s;
+
+
+  transform: scale(1.1);
 }
 
 .left_user_profile{
@@ -51,6 +64,12 @@ html, body{
 .end_session{
 	cursor: pointer;
 	margin-top:10px;
+  transition: 0.2s;
+}
+
+.end_session:hover{
+  transition: 0.2s;
+  color: #3CB371;
 }
 
 .search_maps{
@@ -61,6 +80,8 @@ html, body{
 	background-image: url("/site_img/clean-gray-paper.png");
 	max-height: 450px;
 	overflow: hidden;
+  /*box-shadow: -1px 2px 5px 0px rgba(0,0,0,0.56);*/
+  /*box-shadow: -1px 43px 5px 0px rgba(0,0,0,1);*/
 }
 
 .title_search{
@@ -132,7 +153,8 @@ html, body{
 
 	  <div class="col-md-6 left_user_profile">
 	  	<p>Seja bem vindo, {{mapc.loggedUser.name}}</p>
-	  	<div class="userImg" style="background-image:url('{{mapc.loggedUser.image}}');">
+	  	<div class="userImg" >
+        <div class="image" style="background-image:url('{{mapc.loggedUser.image}}');"></div>
   		</div>
 
   		<p ng-click="mapc.doLogout()" class="end_session">Sair</p>
@@ -189,7 +211,7 @@ html, body{
 
   			<div class="form-group">
   				<div class="col-sm-offset-2 col-sm-10">
-  					<button ng-disabled="reg.regForm.$invalid" type="submit" class="btn btn-default">Atualizar</button>
+  					<button ng-disabled="reg.regForm.$invalid" type="submit" class="btn btn-default"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Atualizar</button>
   				</div>
   			</div>
   		</form>
@@ -215,7 +237,8 @@ html, body{
 
   	 <div class="col-md-6 left_user_profile">
   	 	
-  	 	<div class="userImg" style="background-image:url('/site_img/graph.png'); margin-top:10px; background-color: white;">
+  	 	<div class="userImg">
+        <div class="image" style="background-image:url('/site_img/graph.png'); background-color: white;"></div>
   		</div>
 	</div>
 
@@ -245,7 +268,7 @@ html, body{
 
   			<div class="form-group">
   				<div class="col-sm-offset-2 col-sm-10">
-  					<button ng-disabled="reg.newMapForm.$invalid" type="submit" class="btn btn-default">Criar</button>
+  					<button ng-disabled="reg.newMapForm.$invalid" type="submit" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i> Criar</button>
   				</div>
   			</div>
   		</form>
