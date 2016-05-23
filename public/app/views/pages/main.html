@@ -72,15 +72,35 @@ input[type="file"] { display: none; }
   			<div class="form-group">
   				<label for="inputName" class="col-sm-2 control-label">Nome</label>
   					<div class="col-sm-10">
-  						<input ng-required="true" name="regNome" ng-model="reg.usuario.nome" type="text" class="form-control" id="inputName" placeholder="Nome">
-  						<span ng-show="reg.regForm.regNome.$error.required && reg.hasSubmited">Digite seu nome!</span>
+  						<input 
+                ng-required="true" 
+                name="regNome" 
+                ng-model="reg.usuario.nome" 
+                type="text" 
+                class="form-control" 
+                id="inputName" 
+                placeholder="Nome"
+                ng-maxlength="40"
+                ng-minlength="3"
+                ng-pattern="/^[a-zA-Z\s]*$/">
+  						
+              <span ng-show="reg.regForm.regNome.$error.required && reg.hasSubmited">Digite seu nome!</span>
   					</div>
   			</div>
 
   			<div class="form-group">
   				<label for="inputEmail3" class="col-sm-2 control-label">Email</label>
   				<div class="col-sm-10">
-  					<input ng-required="true" name="regEmail" ng-model="reg.usuario.email" type="email" class="form-control" id="inputEmail3" placeholder="Email">
+  					<input 
+              ng-required="true" 
+              name="regEmail" 
+              ng-model="reg.usuario.email" 
+              type="email" 
+              class="form-control" 
+              id="inputEmail3" 
+              placeholder="Email"
+              ng-maxlength="60">
+
   					<span ng-show="reg.regForm.regEmail.$error.required && reg.hasSubmited">Digite seu email!</span>
   				</div>
   			</div>
@@ -88,7 +108,19 @@ input[type="file"] { display: none; }
   			<div class="form-group">
   				<label for="regSenha1" class="col-sm-2 control-label">Senha</label>
   				<div class="col-sm-10">
-  					<input ng-required="true" type="password" name="regSenha1" ng-model="reg.usuario.senha1"  class="form-control" id="regSenha1" placeholder="Senha" >
+
+  					<input 
+              ng-required="true" 
+              ng-trim="false" 
+              ng-change="reg.usuario.senha1 = reg.usuario.senha1.split(' ').join('')" 
+              type="password" name="regSenha1" 
+              ng-model="reg.usuario.senha1"  
+              class="form-control" 
+              id="regSenha1" 
+              placeholder="Senha"
+              ng-maxlength="10"
+              ng-minlength="3">
+
   					<span ng-show="reg.regForm.regSenha1.$error.required && reg.hasSubmited">Digite sua senha!</span>
   				</div>
   			</div>
@@ -96,7 +128,20 @@ input[type="file"] { display: none; }
   			<div class="form-group">
   				<label for="regSenha2" class="col-sm-2 control-label">Senha</label>
   				<div class="col-sm-10">
-  					<input ng-disabled="reg.regForm.regSenha1.$error.required"  ng-required="true" name="regSenha2" ng-model="reg.usuario.senha2" type="password" class="form-control" id="regSenha2" placeholder="Digite novamente a senha" pw-check="reg.usuario.senha1" >
+  					
+            <input 
+              ng-disabled="reg.regForm.regSenha1.$error.required" 
+              ng-trim="false" 
+              ng-change="reg.usuario.senha1 = reg.usuario.senha1.split(' ').join('')"  
+              ng-required="true" name="regSenha2" 
+              ng-model="reg.usuario.senha2" 
+              type="password" class="form-control" 
+              id="regSenha2" 
+              placeholder="Digite novamente a senha" 
+              pw-check="reg.usuario.senha1"
+              ng-maxlength="10"
+              ng-minlength="3">
+
   					<span ng-show="reg.regForm.regSenha2.$error.required && reg.hasSubmited">Redigite sua senha!</span>
   				</div>
   			</div>
@@ -115,7 +160,8 @@ input[type="file"] { display: none; }
 				  type="file"
 
 				   ngf-select=""  
-	               ng-model="reg.file" 
+	               ng-model="reg.file"
+                 ng-required="false" 
 	               name="file" 
 	               ngf-pattern="'image/*'"
 	               accept="image/*" 

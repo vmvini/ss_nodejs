@@ -56,7 +56,7 @@ angular.module('MainControllerModule', [])
 					$location.path('/me'); //COLOCAR AQUI PAGINA DE PERFIL DO USER
 				}
 				else{
-					console.log("erro no login"+data.message);
+					console.log(data);
 					vm.error = data.message;
 				}
 			});
@@ -86,8 +86,10 @@ angular.module('MainControllerModule', [])
 				.success(function(resp){
 					if(resp.success)
 						vm.reg_complete = true;
-					else
+					else{
 						vm.reg_error = true;
+						console.log(resp);
+					}
 				});
 			});
 		}
