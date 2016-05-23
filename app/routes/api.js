@@ -7,6 +7,10 @@ var secretKey = config.secretKey;
 //requisitando o modulo jsonwebtoken para criação de tokens de autenticação
 var jsonwebtoken = require('jsonwebtoken');
 
+var util = require("util");
+
+
+var dbErrorIdentifier = require('../databaseCodes/db_messages')();
 
 //função para criação de token 
 //parametro: user -> usuario recuperado do banco de dados
@@ -42,8 +46,9 @@ module.exports = function(app, express, io, db, fs){
 			}, 
 			'User', 
 			function(err, result){
-				if(err)
-					res.send(err.message);
+				if(err){
+					res.json(dbErrorIdentifier(err.message));
+				}
 				else
 					res.json({success:"sucesso ao cadastrar"});
 			}
@@ -60,8 +65,13 @@ module.exports = function(app, express, io, db, fs){
 			if(err){
 				res.send(err.message);
 			}
+			else if(result.data.length == 0 ){
+				//user not found
+				res.json( dbErrorIdentifier.getErrorRespObj("AUTHENTICATION_ERROR") );
+
+			}
 			else{
-				//res.json(result.data);
+				//user found
 				if(result.data){
 					//usuario encontrado
 					var token = createToken(result.data[0]);
