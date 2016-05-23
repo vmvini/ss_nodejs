@@ -30,6 +30,30 @@ html, body{
 		color:white;
 }	
 
+.container{
+  margin-top: 30px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.75);
+  padding: 0 !important;
+}
+
+.left{
+  float: left;
+}
+
+.right{
+  float: right;
+}
+
+.container-header{
+  border-bottom: 1px solid rgb(70,70,70);
+}
+
+.container-header p{
+  margin: 20px 0;
+  text-align: center;
+}
+
 .titleNoAccount{
 	font-family: 'Merriweather', serif;
 	font-size:22px;
@@ -51,6 +75,10 @@ span{
 input{
   border-bottom-right-radius: 5px !important;
   border-top-right-radius: 5px !important;
+}
+
+.form-horizontal{
+  margin: 40px;
 }
 
 .userImg{
@@ -91,13 +119,15 @@ input[type="file"] { display: none; }
   </div>
 
   <div class="row account_session">
-  	<div class="col-md-6">
+  	<div class="col-md-6 container left">
   	<!-- FORMULÁRIO DE CADASTRO DE USUARIO -->
-  		<p class="titleNoAccount">Não possui conta? <span>Crie aqui.</span></p>		
+  		<div class="container-header">
+        <p class="titleNoAccount">Não possui conta? <span>Crie aqui.</span></p>
+      </div>
   		<form ng-controller="MainController as reg" name="reg.regForm" ng-submit="reg.doRegistration()" class="form-horizontal" novalidate>
   			
   			<div class="form-group">
-  					<div class="col-sm-10">
+  					<div class="col-sm-12">
             
             <div class="input-group">
                 <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></div>
@@ -109,7 +139,7 @@ input[type="file"] { display: none; }
   			</div>
 
   			<div class="form-group"> 				
-  				<div class="col-sm-10">
+  				<div class="col-sm-12">
           <!-- <label for="inputEmail3" class="control-label">Email</label>
   					<input ng-required="true" name="regEmail" ng-model="reg.usuario.email" type="email" class="form-control" id="inputEmail3" placeholder="Email">
   					<span ng-show="reg.regForm.regEmail.$error.required && reg.hasSubmited">Digite seu email!</span>
@@ -123,7 +153,7 @@ input[type="file"] { display: none; }
         </div>
 
   			<div class="form-group">
-  				<div class="col-sm-10">
+  				<div class="col-sm-12">
           <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
               <input ng-required="true" type="password" name="regSenha1" ng-model="reg.usuario.senha1"  class="form-control" id="regSenha1" placeholder="Senha" >
@@ -135,7 +165,7 @@ input[type="file"] { display: none; }
 
   			<div class="form-group">
   				
-  				<div class="col-sm-10">
+  				<div class="col-sm-12">
           <div class="input-group">
               <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
               <input ng-disabled="reg.regForm.regSenha1.$error.required"  ng-required="true" name="regSenha2" ng-model="reg.usuario.senha2" type="password" class="form-control" id="regSenha2" placeholder="Digite novamente a senha" pw-check="reg.usuario.senha1" >
@@ -198,13 +228,14 @@ input[type="file"] { display: none; }
   		</form>
   	</div>
 
-  	<div class="col-md-6">
-
+  	<div class="col-md-5 container right">
+    <div class="container-header">
   		<p class="titleHasAccount">Já possui conta? <span>Entre aqui.</span></p>
+      </div>
 
   		<form ng-controller="MainController as login" name="login.loginForm" ng-submit="login.doLogin()" class="form-horizontal" novalidate>
   			<div class="form-group">
-        <div class="col-sm-10">
+        <div class="col-sm-12">
         <div class="input-group">
           
             <div class="input-group-addon">@</div>
@@ -216,7 +247,7 @@ input[type="file"] { display: none; }
   			</div>
   			<div class="form-group">
   				<!-- <label for="loginPassword" class="col-sm-2 control-label">Senha</label> -->
-  				<div class="col-sm-10">
+  				<div class="col-sm-12">
           <div class="input-group">
             <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
             <input ng-required="true" name="loginPassword"  ng-model="login.loginData.password" type="password" class="form-control" id="loginPassword" placeholder="senha">
@@ -226,7 +257,7 @@ input[type="file"] { display: none; }
   			</div>
   			
   			<div class="form-group">
-  				<div class="col-sm-10">
+  				<div class="col-sm-12">
   					<button ng-disabled="login.loginForm.$invalid" type="submit" class="btn btn-default"><i class="fa fa-sign-in" aria-hidden="true"></i>
  Entrar</button>
   				</div>
