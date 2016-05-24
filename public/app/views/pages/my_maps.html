@@ -289,9 +289,8 @@ span{
   	  	  <p>Seja bem vindo, <span>{{mapc.loggedUser.name}}</span> !</p>
         </div>
         <div class="card-content fixTransform">
-          <div class="image" style="background-image: url('/img/IMG_20151202_165157.jpg')"></div>
+          <div class="image" style="background-image: url('{{mapc.loggedUser.image}}');"></div>
         </div>
-          <!-- url('{{mapc.loggedUser.image}}');-->
       </div>
   		<p ng-click="mapc.doLogout()" class="end_session">Sair</p>
 	  </div>
