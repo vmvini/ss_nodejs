@@ -137,7 +137,9 @@ span{
 .card{
   overflow: hidden;
   border-radius: 5px;
-  box-shadow: -1px 2px 5px 1px rgba(0,0,0,0.33);
+  box-shadow: -1px 2px 5px 1px rgba(0,0,0,0.50);
+  /*box-shadow: 4px 3px 5px 0px rgba(0,0,0,0.47);*/
+  /*box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.47);*/
   /*height: 300px;*/
   width: 250px;
   -webkit-transform:translateZ(0);
@@ -168,6 +170,10 @@ span{
 
 .left_user_profile{
 	text-align: center;
+}
+
+.left_icon{
+  text-align: center;
 }
 
 .end_session{
@@ -250,15 +256,30 @@ span{
 		color:white;
 		font-family: 'OpenSans-ExtraBold', sans-serif;
 }
+@media screen and (min-width: 1001px){
+
+  .left_user_profile{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .account_session{
+    position: relative !important;
+  }
+
+
+}
 
 @media screen and (max-width: 1000px){
   .container-form{
-    margin-top: 50px;
+    margin-top: 30px;
     width: 100%;
   }
   .left_user_profile{
     width: 100%;
     text-align: center;
+    margin-top: 50px;
   }
   .card{
     margin: auto;
@@ -286,7 +307,7 @@ span{
 	  <div class="col-md-6 left_user_profile left">
       <div class="card">
         <div class="card-header">
-  	  	  <p>Seja bem vindo, <span>{{mapc.loggedUser.name}}</span> !</p>
+          <p><span>{{mapc.loggedUser.name}}</span></p>
         </div>
         <div class="card-content fixTransform">
           <div class="image" style="background-image: url('{{mapc.loggedUser.image}}');"></div>
@@ -387,7 +408,7 @@ span{
 
   <div class="row new_map">
 
-  	 <div class="col-md-6 left_user_profile">
+  	 <div class="col-md-6 left_icon">
   	 	
   	 	<div class="iconImg fixTransform">
         <div class="image" style="background-image:url('/site_img/graph.png'); background-color: white;"></div>
