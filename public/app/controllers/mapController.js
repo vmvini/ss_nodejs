@@ -103,4 +103,17 @@ angular.module('mapController', [])
 
 
 
+	function scrollToAnchor(aid){
+	    var aTag = $("#"+ aid );
+	    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+	}
+
+	vm.goToAnchor = function(anchorId){
+		scrollToAnchor(anchorId);
+	}
+
+
+
+
+
 });

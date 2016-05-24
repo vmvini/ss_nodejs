@@ -3,8 +3,52 @@ html, body{
 	background-color:#EFF4F3; /* cor clarinha */
 }
 
+.navigation{
+  width: 100%;
+  box-shadow: -1px 2px 5px 1px rgba(0,0,0,0.33);
+  position: fixed;
+  z-index: 999;
+  /*//background-image: url("/site_img/chalkboard-backgrounds/chalkboard-backgrounds/chalkboard-green.jpg");*/
+  //background-repeat: no-repeat;
+  //background-position: center center;
+  background-image: url("/site_img/clean-gray-paper.png");
+  background-color:#21A872;
+}
+
+.navigation h3{
+  font-family: 'Giz', sans-serif;
+  color: #fff;
+  margin: 0;
+  padding: 17px 0;
+  margin-left: 20px;
+  float: left;
+}
+
+.navigation .menu{
+  list-style: none;
+  margin: 0;
+  float: right;
+}
+
+.navigation .menu li{
+  float: left;
+  margin: 20px 0;
+}
+
+.navigation .menu li a{
+  padding: 18px 21px 21px 21px;
+  text-decoration: none;
+  color: #fff;
+  font-family: 'Giz', sans-serif;
+}
+
+.navigation .menu li a:hover{
+  border-top: 4px solid rgba(255, 255, 255, .5);
+}
+
 .container .jumbotron {
     border-radius: 0px;
+
 }
 
 .header{
@@ -18,6 +62,7 @@ html, body{
 	border-bottom-left-radius: 0;
 	background-image: url("/site_img/clean-gray-paper.png");
 	margin:0;
+  margin-top: 60px !important;
 
 }
 
@@ -222,6 +267,15 @@ span{
 
 </style>
 
+  <nav class="navigation">
+    <h3>Synthetic Study</h3>
+    <ul class="menu">
+      <li> <a ng-click="mapc.goToAnchor('account')" href="#">Account</a></li>
+      <li><a ng-click="mapc.goToAnchor('find')" href="#">Find Mind Maps</a></li>
+      <li><a ng-click="mapc.goToAnchor('create')"  href="#">Create a Mind Map</a></li>
+      <li><a ng-click="mapc.goToAnchor('your')" href="#">Your Mind Maps</a></li>
+    </ul>
+  </nav>
   <div class="jumbotron header">
     <h1>Synthetic Study</h1> 
     <p>Estude criando mapas mentais de maneira simples, intuitiva e divertida.</p> 
@@ -235,16 +289,15 @@ span{
   	  	  <p>Seja bem vindo, <span>{{mapc.loggedUser.name}}</span> !</p>
         </div>
         <div class="card-content fixTransform">
-          <div class="image" style="background-image: url('/img/IMG_20151202_165157.jpg')"></div>
+          <div class="image" style="background-image: url('{{mapc.loggedUser.image}}');"></div>
         </div>
-          <!-- url('{{mapc.loggedUser.image}}');-->
       </div>
   		<p ng-click="mapc.doLogout()" class="end_session">Sair</p>
 	  </div>
 
 	  <div class="col-md-6 container-form right">
       <div class="container-form-header">
-        <p>Você pode alterar sua conta!</p>
+        <p id="account">Você pode alterar sua conta!</p>
       </div>
 	  	<form ng-controller="MapController as reg" name="reg.regForm" ng-submit="reg.doUpdate()" class="form-horizontal" novalidate>
   			
@@ -321,7 +374,7 @@ span{
 
 
   <div class="row search_maps">
-  	<h1 class="title_search">Encontre mapas mentais</h1>
+  	<h1 class="title_search" id="find">Encontre mapas mentais</h1>
   	<input type="text" ng-model="mapc.expression" ng-model-options="{debounce: 1000}" class="form-control" style="border-bottom-left-radius:0; border-bottom-right-radius: 0;" placeholder="Digite algum termo que identifique um mapa mental">
   	
   	<ul class="search_results">
@@ -342,7 +395,7 @@ span{
 	</div>
 
   	 <div class="col-md-6">
-  	 <h3>Crie aqui um mapa mental</h3>
+  	 <h3 id="create">Crie aqui um mapa mental</h3>
   	 <form ng-controller="MapController as reg" name="reg.newMapForm" ng-submit="reg.createMap()" class="form-horizontal" novalidate>
   			
   			<div class="form-group">
@@ -383,7 +436,7 @@ span{
 
 
 
-  	<h1 class="title_search">Meus Mapas</h1>
+  	<h1 class="title_search" id="your">Meus Mapas</h1>
   	<input type="text" ng-model="mapc.expression2" ng-model-options="{debounce: 1000}" class="form-control" style="border-bottom-left-radius:0; border-bottom-right-radius: 0;" placeholder="Digite algum termo que identifique um mapa mental">
   	
   	<ul class="search_results">
