@@ -124,6 +124,8 @@ input[type="file"] { display: none; }
 }
 
 
+
+
 </style>
 
 <!--div class="container"-->
@@ -144,14 +146,15 @@ input[type="file"] { display: none; }
 
   					<div class="col-sm-12">
             
-            <div class="input-group">
-                <div class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></div>
+            <div class="input-group" ng-class="{ 'has-error' : reg.regForm.regNome.$invalid && reg.regForm.regNome.$touched }" >
+                <div class="input-group-addon"  >
+                  <i class="fa fa-user" aria-hidden="true"></i></div>
                   <input 
                   ng-required="true" 
                   name="regNome" 
                   ng-model="reg.usuario.nome" 
                   type="text" 
-                  class="form-control" 
+                  class="form-control"
                   id="inputName" 
                   placeholder="Nome"
                   ng-maxlength="40"
@@ -170,7 +173,7 @@ input[type="file"] { display: none; }
 
   					<span ng-show="reg.regForm.regEmail.$error.required && reg.hasSubmited">Digite seu email!</span>
   				</div> -->
-          <div class="input-group">
+          <div class="input-group" ng-class="{ 'has-error' : reg.regForm.regEmail.$invalid && reg.regForm.regEmail.$touched }">
               <div class="input-group-addon">@</div>
               <input 
               ng-required="true" 
@@ -189,7 +192,7 @@ input[type="file"] { display: none; }
   			<div class="form-group">
 
   				<div class="col-sm-12">
-          <div class="input-group">
+          <div class="input-group" ng-class="{ 'has-error' : reg.regForm.regSenha1.$invalid && reg.regForm.regSenha1.$touched }" >
               <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
               <input 
               ng-required="true" 
@@ -212,7 +215,7 @@ input[type="file"] { display: none; }
 
   			<div class="form-group">
           <div class="col-sm-12">
-          <div class="input-group">
+          <div class="input-group" ng-class="{ 'has-error' : reg.regForm.regSenha2.$invalid && reg.regForm.regSenha2.$touched }">
               <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
               <input 
               ng-disabled="reg.regForm.regSenha1.$error.required" 
